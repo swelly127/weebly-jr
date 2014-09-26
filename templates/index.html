@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
+    <head>
+        <meta property="og:image" content="http://cache1.asset-cache.net/gc/138077286-newtons-cradle-depicting-positive-graph-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=NR1C%2BXa945J0XzPWcWj9MAgVbU2xSsaVXWTMuiqysb4%3D" />
+        <meta charset="utf-8">
+        <title>ShrubFund</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="shortcut icon" href="/static/flat-ui/images/favicon.ico">
+        <link rel="stylesheet" href="/static/flat-ui/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="/static/flat-ui/css/flat-ui.css">
+        <!-- Using only with Flat-UI (free)-->
+        <link rel="stylesheet" href="/static/css/icon-font.css">
+        <!-- end -->
+        <link rel="stylesheet" href="/static/css/index.css">
+    </head>
+
+    <body>
+        <div class="page-wrapper">
+            <!-- header-10 -->
+            <header class="header-10 bg-turquoise" style="font-family: Langdon;">
+                <div class="container">
+                    <div class="navbar col-sm-12" role="navigation">
+                        <img href="/" src="static/img/logo.png" width="320" height="140" class="logo">
+                        <div class="collapse navbar-collapse pull-right">
+                            <ul class="nav pull-left">
+                                <li class="active"><a href="/" style="font-size:25px;">HOME</a></li>
+                                <li><a href="/portfolio" style="font-size:25px;">PORTFOLIO</a></li>
+                                <li><a href="/faq" style="font-size:25px;">FAQ</a></li>
+                                <li><a style="font-size:25px;" href="mailto:contact@shrubfund.co?subject=ShrubFund";>
+                                    CONTACT
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- content-23  -->
+            <section class="content-23  v-center bg-midnight-blue">
+                <div id="bgVideo" class="background"></div>
+                <div>
+                    <div class="container">
+                        <div class="hero-unit">
+                            {% if msg == "thanks" %}
+                                <h1>Thanks for signing up!
+                                <br class="hidden-phone">
+                                We'll be in touch shortly.</h1>
+                            {% else %}
+                                <h1>Let's make micro investing
+                                <br class="hidden-phone">
+                                the next big thing.</h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <a class="control-btn fui-arrow-down" href="#"> </a>
+            </section>
+
+            <!-- content-7  -->
+            <section class="content-7 v-center">
+                <div>
+
+                    <div class="container">
+                        <h3>
+                            ShrubFund is the first platform designed specifically to <br>
+                            encourage college students to start investing.
+                        </h3>
+
+                        <div class="row v-center">
+                            <div class="col-sm-3">
+                                <div class="col-sm-offset-2">
+                                    <h6>Due Diligence</h6>
+                                    We do our research. Most of our funds are from Vanguard, one of the best investment management companies in the world.
+                                    <h6>Convenient</h6>
+                                    Our mobile app makes it possible to quickly check investments on the go, and withdraw or deposit money in seconds.
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-offset-1">
+                                    <div class="screen-wrapper">
+                                        <div class="screen">
+                                            <img src="static/img/mockup3.png" alt="">
+                                            <img src="static/img/mockup3.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="col-sm-offset-2">
+                                    <h6>Low Cost</h6>
+                                    ShrubFund only charges 0.50% of your balance per year. Our most popular competitor charges 1%, in addition to a monthly fee.
+                                    <h6>Easy Liquidation</h6>
+                                    We have no limit on how often you withdraw or deposit money into your account.
+                                    <h6>Perfect for Beginners</h6>
+                                    We know you don't have a ton of time, so we summarize your portfolio and earnings in a simple, easy to understand format.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- content-23  -->
+            <section class="content-23 v-center bg-midnight-blue custom-bg">
+                <div>
+                    <div class="container">
+                        <div class="hero-unit hero-unit-bordered">
+                            <h1>Ready to make moves?</h1>
+                        </div>
+                    </div>
+                </div>
+                <a class="control-btn fui-arrow-down" href="#"> </a>
+            </section>
+
+            <!-- content-8  -->
+            <section class="content-8 v-center">
+                <div>
+                    <div class="container">
+                        <img src="static/img/good-stock-chart1.jpg" width="397" height="193" alt="">
+
+                        <h3>Get on the list</h3>
+
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <p>Our team is working hard to make this happen.
+                                    <br>Sign up below to be in our first batch of beta testers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <section class="content-13 subscribe-form" style="background-color:red;" id="signup">
+            {% else %}
+                <section class="content-13 subscribe-form bg-turquoise" id="signup">
+            {% endif %}
+                <div class="container">
+                    <div class="row">
+                        <form action="/" method="post">
+                            <div class="col-sm-8">
+                                {% if messages %}
+                                <input name="email" type="text" placeholder='{{messages.0}}' spellcheck="false">
+                                {% else %}
+                                <input name="email" type="text" placeholder="Enter your e-mail" spellcheck="false">
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-large btn-primary" type="submit">
+                                    SIGN UP FOR BETA
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            {% endwith %}
+
+
+        <footer class="footer-2 bg-midnight-blue">
+                <div class="container">
+                    <nav class="pull-left">
+                        <ul>
+                            <li class="active">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                            <li>
+                                <a href="/portfolio">Portfolio</a>
+                            </li>
+                            <li>
+                                <a href="/faq">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="mailto:contact@shrubfund.co?subject=ShrubFund">Contact</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="social-btns pull-right">
+                        <a target="_blank" href="https://www.linkedin.com/company/shrubfund/"><div class="fui-linkedin"></div><div class="fui-linkedin"></div></a>
+                        <a target="_blank" href="https://www.facebook.com/shrubfund"><div class="fui-facebook"></div><div class="fui-facebook"></div></a>
+                        <a target="_blank" href="https://www.twitter.com/shrubfundco"><div class="fui-twitter"></div><div class="fui-twitter"></div></a>
+                    </div>
+                    <div class="additional-links">
+                        Be sure to take a look to our <a href="/legal">Terms of Use</a> and <a href="/privacy">Privacy Policy</a>
+                    </div>
+                </div>
+            </footer>
+
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="static/js/jquery-1.10.2.min.js"></script>
+        <script src="static/flat-ui/js/bootstrap.min.js"></script>
+        <script src="static/js/modernizr.custom.js"></script>
+        <script src="static/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+        <script src="static/js/jquery.parallax.min.js"></script>
+        <script src="static/js/startup-kit.js"></script>
+        <script src="static/js/jquery.backgroundvideo.min.js"></script>
+        <script src="static/js/index.js"></script>
+    </body>
+</html>

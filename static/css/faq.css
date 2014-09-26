@@ -1,0 +1,24 @@
+.question {
+	font-weight:bold;
+	color: #1abc2d;
+}
+.answer {
+	margin-top:0px;
+	margin-bottom:15px;
+}
+
+.faq {
+	width: 70%;
+	margin-top: 50px;
+	margin-left: 15%;
+	margin-bottom: 30px;
+}
+
+.morequestions {
+	text-align:center;
+	border: 1px solid black;
+	padding:5px;
+	width:50%;
+	margin-left:25%;
+	margin-top: 30px;"
+}
