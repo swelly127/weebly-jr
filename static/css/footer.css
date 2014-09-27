@@ -1,0 +1,45 @@
+.footer-link {
+  float: left;
+  margin-top: 15px;
+}
+
+.social-btns {
+  margin: 25px 0 10px;
+  white-space: nowrap;
+}
+
+.social-btns a {
+  padding: 0px;
+}
+
+.social-btns > * {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 15px;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: normal;
+  color: #979c9f;
+  width: 20px;
+  height: 25px;
+  overflow: hidden;
+  text-align: center;
+}
+.social-btns > *:first-child {
+  margin-left: 0;
+}
+.social-btns > * > * {
+  display: block;
+  position: relative;
+  top: 0;
+  -webkit-transition: 0.25s top;
+  -moz-transition: 0.25s top;
+  -o-transition: 0.25s top;
+  transition: 0.25s top;
+}
+.social-btns > * > *:first-child {
+  color: #bdc3c7;
+}
+.social-btns > *:hover > * {
+  top: -100%;
+}

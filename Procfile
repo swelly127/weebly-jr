@@ -1,1 +1,1 @@
-web: newrelic-admin run-program gunicorn poker:app --log-file=-
+web: gunicorn pokerbot:app --log-file=-
