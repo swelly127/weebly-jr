@@ -57,9 +57,9 @@ class Deck:
     return result
 
 class Hand:
-  self._myranks = [0] * 14
-  self._mysuits = [0] * 4
-  self._cards = []
+  _myranks = [0] * 14
+  _mysuits = [0] * 4
+  _cards = []
 
   def __init__(self, cards):
     self._cards = cards
