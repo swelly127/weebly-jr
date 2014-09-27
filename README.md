@@ -5,7 +5,7 @@ Most of this code is copied from another website I made using Flask (http://flas
 
 This was the most lightweight way I could think of to do this, all the technologies used have a very low learning curve.
 
-Everything other than "controller.py" is copied from the previous website right now. I can explain everything at our next meeting, but for now I think we should work on defining the classes we need:
+Everything other than "models.py" almost everything is copied from the previous website right now. I can explain everything at our next meeting, but for now I think we should work on defining the classes we need:
 
 So far I've defined Card, Deck, Game, and Player but I'm not completely sure if that is the best way to do it. This is a very rough draft, feel free to overwrite anything at this point.
 
