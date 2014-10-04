@@ -1,4 +1,4 @@
-poker
+POKER
 =====
 
 Most of this code is copied from another website I made using Flask (http://flask.pocoo.org/docs/0.10/tutorial/) and Postgres and hosted with Heroku, so no need to understand the code right now.

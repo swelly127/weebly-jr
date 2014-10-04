@@ -199,12 +199,11 @@ def update_holdings():
     db.session.commit()
     return "Done"
 
+# texts me phone if it is not a test environment
 def text(txt):
-    if 'VIRTUAL_ENV' in os.environ:
-        print os.environ
-    else:
+    if 'VIRTUAL_ENV' not in os.environ:
         requests.post(BLOWERIO_URL+'/messages', data={
-            'to': '+14154907810', 
+            'to': OWNER_NUMBER, 
             'message': txt
         })
 
