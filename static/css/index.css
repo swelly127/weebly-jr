@@ -1,7 +1,3 @@
-h2 {
-    text-align: left;
-}
-
 .section {
     padding: 30px;
 }
@@ -88,7 +84,6 @@ a {
 }
 
 .centered-view {
-    width: 980px;
     margin: 0 auto;
 }
 
@@ -96,12 +91,29 @@ a {
     text-align: center;
     background-color: white;
 }
-
+.money-view-top #game-info {
+    font-size: 16px;
+    margin:10px;
+    color: grey;
+    font-weight: 500px;
+}
+#balance {
+    color: greenyellow;
+    font-size:15px; 
+    margin-right: 2px;
+    font-weight:500; 
+    text-align:right;
+}
 .money-view-top {
-    text-align: left;
+    text-align: center;
+    min-width: 420px;
 }
 
 .balance {
+    color: green;
+    width:100%;
+    float: right;
+    text-align: right;
     font-size: 1.5em;
 }
 
@@ -116,7 +128,7 @@ a {
 }
 
 .transaction-table {
-    width: 980;
+    margin: auto;
     margin-bottom: 50px;
 }
 
@@ -131,7 +143,13 @@ a {
 #dw_response {
     margin-top: 10px;
     color: green;
-    width: 400px;
+}
+#table_cards {
+}
+
+#player_cards, #dealer_cards {
+    width: 50%;
+    float: left;
 }
 
 #dropdown-1 {

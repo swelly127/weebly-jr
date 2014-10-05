@@ -4,7 +4,8 @@
             <img class='fa' width="50" src="static/img/robot.png"/> PokerBot
         </a>
         <span class='venmo-login'>
-            <span class='user-name'>{data.user.first_name} {data.user.last_name}</span>
+            <!--<span class='user-name'>{data.user.first_name} {data.user.last_name}</span>-->
+            <span class='user-name'>Jessica Shu<div id="balance">Balance: $5.23</div></span>
             <div id="dropdown-1" class="dropdown dropdown-tip dropdown-anchor-right">
                 <ul class="dropdown-menu">
                     <li><a href="mailto:jessicashu127@gmail.com?subject=PokerBot">Contact</a></li>
@@ -16,32 +17,36 @@
         </span>
      </div>
     <div class='pure-u-1 centered-wrapper'>
-        <div class='pure-g centered-view section'>
+        <div class='centered-view section'>
             <div class='pure-u-1-2 money-view-top'>
-                 <div class='balance' id='balance'>
-                    Balance: $6.74
+                <div id="table_cards">
+                    <h3 style="text-align:center;">Table Cards</h3>
+                    <img src="static/img/cards/10Spades.png">
+                    <img src="static/img/cards/4Clubs.png">
+                    <img src="static/img/cards/5Clubs.png">
+                    <img src="static/img/cards/BlueVertical.png">
+                    <img src="static/img/cards/BlueVertical.png">
                 </div>
-                <ul>
-                    <li data="Vanguard Total Stock Market Index Fund Investor Shares">
-                        <a target="_blank" href="http://www.google.com/finance?q=MUTF%3AVTSMX">
-                            $55.23 Stocks (VTSMX)</a></li>
-                    <li data="Vanguard Short-Term Bond ETF">
-                        <a target="_blank" href="https://www.google.com/finance?q=NYSEARCA%3ABSV">
-                        $4.23 Bonds (BSV)</a></li>
-                    </ul>
-                <div id='percent'>
-                    <!--{data.stock_percentage}% Stocks and {100 - data.stock_percentage}% Bonds-->
-                    95% Stocks and 5% Bonds
-                </div>
-                <div id='slider'>
-                </div>
+                <div id="game-info">Pot: $0 • Small Blind: $0.20 • Big Blind: $0.40</div>
                 <div class='dwbutton'>
                     <form class='pure-form'>
-                        $ <input id='dwamount' type='text' placeholder='100.00' style="width:40%"/>
-                        <input type='button' class='pure-button pure-button-primary' value='Deposit' onClick="deposit()" />
-                        <input type='button' class='pure-button pure-button-primary' value='Withdraw' onClick="withdraw()" />
+                        <!--<div id='slider'></div>-->
+                        $ <input id='dwamount' type='text' placeholder='100.00' style="width:30%"/>
+                        <input type='button' class='pure-button pure-button-primary' value='Raise' onClick="raise()" />
+                        <input type='button' class='pure-button pure-button-primary' value='Call' onClick="call()" />
+                        <input type='button' class='pure-button pure-button-primary' value='Fold' onClick="fold()" />
                     </form>
-                    <div id='dw_response'></div>
+                    <br><div id='dw_response'>Dealer raises 20. Please raise, call or fold.</div>
+                </div>
+                <div id="player_cards">
+                    <h3 style="text-align:center;">Your Cards</h3>
+                    <img src="static/img/cards/14Spades.png">
+                    <img src="static/img/cards/14Hearts.png">
+                </div>
+                <div id="dealer_cards">
+                    <h3 style="text-align:center;">Dealer Cards</h3>
+                    <img src="static/img/cards/BlueVertical.png">
+                    <img src="static/img/cards/BlueVertical.png">
                 </div>
             </div>
             <div class='pure-u-1-2'>
@@ -51,17 +56,15 @@
     </div>
     <div class='pure-u-1 centered-wrapper'>
         <div class='centered-view'>
-            <h2>Transactions</h2>
+            <h2>Past Games</h2>
             <table class="pure-table pure-table-horizontal transaction-table">
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Balance</th>
-                        <th>Stock Balance</th>
-                        <th>Bond Balance</th>
-                        <th>Stock Change</th>
-                        <th>Bond Change</th>
-                        <th>Type</th>
+                        <th>Pot</th>
+                        <th>Winning Hand</th>
+                        <th>Winner</th>
+                        <th>Change in Balance</th>
                     </tr>
                 </thead>
 
