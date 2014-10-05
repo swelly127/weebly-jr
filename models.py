@@ -174,7 +174,7 @@ class Users(db.Model):
     meta = db.Column(JSON)
     access_token = db.Column(db.String(80), unique=True)
     small_blind = db.Column(db.Integer)
-    email = db.Column(db.String(120), unique=True)
+    name = db.Column(db.String(120))
     chips = db.Column(db.Integer)
     joined = db.Column(db.DateTime)
 

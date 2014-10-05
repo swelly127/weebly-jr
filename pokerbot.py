@@ -6,6 +6,8 @@ import sendgrid
 import datetime
 import models
 import settings
+import urllib
+import cgi
 from settings import *
 from models import *
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for, jsonify
@@ -33,7 +35,6 @@ def index():
 @app.route('/move', methods=["POST"])
 def move():
     pass
-
 
 @app.route('/deposit', methods=["POST"])
 def deposit():
@@ -139,35 +140,54 @@ def get_payments():
     print data[0]
     return jsonify({"data": data})
 
+@app.route('/login')
+def login():
+    args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:4000/auth")
+    return redirect(
+        "https://graph.facebook.com/oauth/authorize?" +
+        urllib.urlencode(args))
+
 @app.route('/auth')
 def auth():
-    AUTHORIZATION_CODE = request.args.get('code')
-    data = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "code": AUTHORIZATION_CODE
-        }
-    url = "https://api.venmo.com/v1/oauth/access_token"
-    response = requests.post(url, data)
-    response_dict = response.json()
+    """ Extract authorization token """
+    args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:4000/auth")
+    args["client_secret"] = FACEBOOK_APP_SECRET  
+    args["code"] = request.args.get("code")
 
-    _id = response_dict.get('user')['id']
 
-    session['user_id'] = _id
-    session['access_token'] = response_dict.get('access_token')
+    """ Get access token """
+    response_str = urllib.urlopen(
+        "https://graph.facebook.com/oauth/access_token?" +
+        urllib.urlencode(args)).read()
 
-    user = Users.query.filter_by(id=_id).first()
+    """ If token request fails, redirect back to login """
+    if response_str[0] == "{":
+        del(args["client_secret"])
+        return redirect(
+        "https://graph.facebook.com/oauth/authorize?" +
+        urllib.urlencode(args))
+    response = cgi.parse_qs(response_str)
+    access_token = response["access_token"][-1]
+
+
+    """ Get profile data """
+    profile = json.load(urllib.urlopen(
+        "https://graph.facebook.com/me?" +
+        urllib.urlencode(dict(access_token=access_token))))
+    user_id = profile['id']
+    session['access_token'] = access_token
+    session['user_id'] = user_id
+
+    user = Users.query.filter_by(id=user_id).first()
 
     if user is None:
-        user = Users(_id)
+        user = Users(user_id)
 
-    user.venmo_metadata = response_dict.get('user')
-    user.access_token = response_dict.get('access_token')
-    user.email = response_dict.get('user')['email']
+    user.access_token = access_token
+    user.name = profile['first_name'] + profile['last_name']
+
     db.session.add(user)
     db.session.commit()
-
-    text(response_dict.get('user')['display_name'] + " is now using ShrubFund!")
 
     return redirect(url_for('index'))
 
