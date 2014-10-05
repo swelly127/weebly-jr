@@ -171,8 +171,9 @@ class Users(db.Model):
     __tablename__ = 'Users'
     id = db.Column(db.String(80), primary_key=True)
     aggressiveness = db.Column(db.Integer) # num between -100 and 100 from safe to frequent raiser
-    venmo_metadata = db.Column(JSON)
+    metadata = db.Column(JSON)
     access_token = db.Column(db.String(80), unique=True)
+    small_blind = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True)
     chips = db.Column(db.Integer)
     joined = db.Column(db.DateTime)
@@ -191,7 +192,7 @@ class Users(db.Model):
     def serialize(self):
       return {
         'id': self.id,
-        'venmo': self.venmo_metadata,
+        'metadata': self.metadata,
         'access_token': self.access_token,
         'email': self.email,
         'chips': self.chips,
