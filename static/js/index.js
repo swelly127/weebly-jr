@@ -54,10 +54,13 @@ function start(user_balance) {
         $.post("/new", post_parameters).done(function(response) {
             $("#start_options").addClass("hidden");
             $("#move_options").removeClass("hidden");
-            
+            // set player cards
+            // set message
         }).fail(function(error) {
-            $("#dw_response").text(error);
-            $("#dw_response").css('color', 'red');
+            $("#start_options").addClass("hidden");
+            $("#move_options").removeClass("hidden");
+            // $("#dw_response").text(error);
+            // $("#dw_response").css('color', 'red');
         });
     }
 };

@@ -31,7 +31,7 @@ class Card:
   def get_suit(self):
     return self._suit
   def image_name(self):
-    return str(self._rank) + str(self._suit) + ".png"
+    return str(self._rank) + str(self._suit)
   def __str__(self):
     return TRANSLATE[self._rank] + " of " + self._suit
   def __lt__(self, other):
@@ -173,7 +173,6 @@ class Users(db.Model):
     aggressiveness = db.Column(db.Integer) # num between -100 and 100 from safe to frequent raiser
     meta = db.Column(JSON)
     access_token = db.Column(db.String(80), unique=True)
-    small_blind = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True)
     chips = db.Column(db.Integer)
     joined = db.Column(db.DateTime)
@@ -181,8 +180,12 @@ class Users(db.Model):
     def __init__(self, _id):
       self.id = _id
       self.aggressiveness = 0
-      self.balance = 0
+      self.chips = 100
       self.joined = datetime.now()
+
+    @property
+    def small_blind(self):
+        return 10
 
     @property
     def balance(self):
@@ -222,13 +225,25 @@ class Games(db.Model):
   def __init__(self, player_id):
     self.player_id = player_id
 
-    self._dealer_cards = [self._deck.deal(), self._deck.deal()]
-    self._player_cards = [self._deck.deal(), self._deck.deal()]
+    first_dealer_card = self._deck.deal()
+    second_dealer_card = self._deck.deal()
+    self._dealer_cards = [first_dealer_card.image_name, second_dealer_card.image_name]
+  
+    first_player_card = self._deck.deal()
+    second_player_card = self._deck.deal()
+    self._player_cards = [first_player_card.image_name, second_player_card.image_name]
+
     self._table_cards = []
 
     self._moves = []
 
     self.timestamp = datetime.now(pytz.utc)
+
+  def get_dealer_cards(self):
+    return self._dealer_cards
+
+  def get_player_cards(self):
+    return self._player_cards
 
   def deal(self):
     if self._table_cards == []:
