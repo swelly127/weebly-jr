@@ -47,34 +47,19 @@ function start(user_balance) {
     if (user_balance < 20) {
         $("#dw_response").text("Not enough chips!");
         $("#dw_response").css('color', 'red'); 
-        $("#new_game_button").removeClass('pure-button-primary').addClass('pure-button-disabled'); 
+        $("#new-game-button").removeClass('pure-button-primary').addClass('pure-button-disabled'); 
     } else {
+        var post_parameters = {user_id: "14743168199"};
 
+        $.post("/new", post_parameters).done(function(response) {
+            $("#start_options").addClass("hidden");
+            $("#move_options").removeClass("hidden");
+            
+        }).fail(function(error) {
+            $("#dw_response").text(error);
+            $("#dw_response").css('color', 'red');
+        });
     }
-    $('#balance').text('Balance: $' + response.balance);
-    var stock_css = 'positive';
-    if (response.stock_change < 0) {
-        stock_css = 'negative';
-    } else if (response.stock_change === 0) {
-        stock_css = '';
-    }
-
-    var trans = '<tr>';
-        trans += '<td>' + response.timestamp + '</td>';
-        trans += '<td class=' + stock_css + '>$' + Math.abs(response.stock_change) + '</td>';
-        trans += '<td class=' + bond_css + '>$' + Math.abs(response.bond_change) + '</td>';
-        trans += '<td>' + response.type + '</td>';
-        trans += '</tr>';
-
-    $('#trans').prepend(trans);
-    lastColumns.push(response.balance);
-    if (chart) {chart.load({columns: [lastColumns]})}
-    else {
-        $("#dw_response").text(response.error.message);
-        $("#dw_response").css('color', 'red');
-    }
-    $('#dwamount').val('');
-    locked = false;
 };
 
 function raise() {
@@ -118,8 +103,7 @@ function deposit() {
         user_id: "1474347734663168199",
     };
 
-    $.post("/deposit", post_parameters).done(finishTransaction
-    ).fail(function(error) {
+    $.post("/deposit", post_parameters).done(finishTransaction).fail(function(error) {
         $("#dw_response").text(error);
         $("#dw_response").css('color', 'red');
         locked = false;

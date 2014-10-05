@@ -34,6 +34,49 @@ def index():
 def move():
     pass
 
+@app.route('/new', methods=["POST"])
+def new():
+    user_id = request.form['user_id']
+
+    payload = {
+        "access_token": access_token,
+        "note": note,
+        "amount": amount,
+        "user_id": user_id
+    }
+
+    url = "https://api.venmo.com/v1/payments"
+    response = requests.post(url, payload)
+    data = response.json()
+    if 'error' in data:
+        return jsonify(data)
+    else:
+        user = Users.query.filter_by(id=session['user_id']).first()
+        user.balance = user.balance + amount
+        depo = Updates(session['user_id'], "Deposit")
+        depo.balance = user.balance
+        depo.stock_percentage = user.stock_percentage
+
+        depo.stock_change = amount * user.stock_percentage/100.0
+        depo.bond_change = amount * user.bond_percentage/100.0
+
+        db.session.add(depo)
+        db.session.add(user)
+        db.session.commit()
+
+        text(user.venmo_metadata['display_name'] + " has just deposited " + str(amount))
+
+        return jsonify({
+            'message': "Successfully deposited $" + str(amount) + "!",
+            'balance': user.balance,
+            'type': 'Deposit',
+            'stock_balance': "%.2f" % (user.balance * user.stock_percentage/100.0),
+            'bond_balance': "%.2f" % (user.balance * user.bond_percentage/100.0),
+            'stock_change': "%.2f" % depo.stock_change,
+            'bond_change': "%.2f" % depo.bond_change,
+            'timestamp': datetime.now().strftime("%B %d %Y %I:%M%p")
+        })
+
 
 @app.route('/deposit', methods=["POST"])
 def deposit():
