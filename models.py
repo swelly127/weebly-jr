@@ -171,7 +171,7 @@ class Users(db.Model):
     __tablename__ = 'Users'
     id = db.Column(db.String(80), primary_key=True)
     aggressiveness = db.Column(db.Integer) # num between -100 and 100 from safe to frequent raiser
-    metadata = db.Column(JSON)
+    meta = db.Column(JSON)
     access_token = db.Column(db.String(80), unique=True)
     small_blind = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True)
@@ -192,7 +192,7 @@ class Users(db.Model):
     def serialize(self):
       return {
         'id': self.id,
-        'metadata': self.metadata,
+        'meta': self.meta,
         'access_token': self.access_token,
         'email': self.email,
         'chips': self.chips,

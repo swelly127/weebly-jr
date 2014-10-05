@@ -5,7 +5,7 @@
         </a>
         <span class='venmo-login'>
             <!--<span class='user-name'>{data.user.first_name} {data.user.last_name}</span>-->
-            <span class='user-name'>Jessica Shu<div id="balance">Balance: $5.23</div></span>
+            <span class='user-name'>Jessica Shu<div id="balance">523 Chips</div></span>
             <div id="dropdown-1" class="dropdown dropdown-tip dropdown-anchor-right">
                 <ul class="dropdown-menu">
                     <li><a href="mailto:jessicashu127@gmail.com?subject=PokerBot">Contact</a></li>
@@ -27,16 +27,21 @@
                     <img src="static/img/cards/BlueVertical.png">
                     <img src="static/img/cards/BlueVertical.png">
                 </div>
-                <div id="game-info">Pot: $0 • Small Blind: $0.20 • Big Blind: $0.40</div>
+                <div id="game-info">Pot: 0 • Small Blind: 20 • Big Blind: 40</div>
                 <div class='dwbutton'>
-                    <form class='pure-form'>
+                    <form class='pure-form' id="start_options">
+                        <!--<div id='slider'></div>-->
+                        <input type='button' class='pure-button pure-button-primary' id="new-game-button" value='New Game' onClick="start(4)" />
+                        <input type='button' class='pure-button pure-button-primary' value='Add 100 Chips' onClick="buy()" />
+                    </form>
+                    <form class='pure-form hidden' id="move_options">
                         <!--<div id='slider'></div>-->
                         $ <input id='dwamount' type='text' placeholder='100.00' style="width:30%"/>
                         <input type='button' class='pure-button pure-button-primary' value='Raise' onClick="raise()" />
                         <input type='button' class='pure-button pure-button-primary' value='Call' onClick="call()" />
                         <input type='button' class='pure-button pure-button-primary' value='Fold' onClick="fold()" />
                     </form>
-                    <br><div id='dw_response'>Dealer raises 20. Please raise, call or fold.</div>
+                    <div id='dw_response'>Dealer raises 20. Please raise, call or fold.</div>
                 </div>
                 <div id="player_cards">
                     <h3 style="text-align:center;">Your Cards</h3>
@@ -62,9 +67,9 @@
                     <tr>
                         <th>Date</th>
                         <th>Pot</th>
-                        <th>Winning Hand</th>
+                        <th>Best Hand</th>
                         <th>Winner</th>
-                        <th>Change in Balance</th>
+                        <th>Balance Change</th>
                     </tr>
                 </thead>
 

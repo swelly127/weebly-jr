@@ -30,6 +30,11 @@ def index():
                 'client_id': client_id}
         return render_template('index.html', data=data)
 
+@app.route('/move', methods=["POST"])
+def move():
+    pass
+
+
 @app.route('/deposit', methods=["POST"])
 def deposit():
     access_token = session['access_token']

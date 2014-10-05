@@ -2,6 +2,10 @@
     padding: 30px;
 }
 
+form.hidden {
+    display: none;
+}
+
 .center {
     text-align: center;
 }
