@@ -11,6 +11,15 @@ Since this is an AI project the UI doesn't need to be perfect. I plan on continu
 
 If you guys want to get started feel free to start looking through the code in models.py — I'm gonna figure out how to setup the rest of the site for now. I'm currently putting the final touches on our <a href="http://pokerbot.co">landing page</a>.
 
+TO TEST:
+source venv/bin/activate
+pip install -r requirements.txt 
+
+foreman start web
+
+VIEW SITE @ 127.0.0.1:5000
+
+
 Let me know if you have any questions!
 
 Jessica

@@ -30,6 +30,8 @@ class Card:
     return self._rank
   def get_suit(self):
     return self._suit
+  def image_name(self):
+    return str(self._rank) + str(self._suit) + ".png"
   def __str__(self):
     return TRANSLATE[self._rank] + " of " + self._suit
   def __lt__(self, other):

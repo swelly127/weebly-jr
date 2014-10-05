@@ -4,32 +4,34 @@
             <img class='fa' width="50" src="static/img/robot.png"/> PokerBot
         </a>
         <span class='venmo-login'>
-            <span class='user-name'>{{ data.user.first_name }} {{ data.user.last_name}}</span>
+            <span class='user-name'>{data.user.first_name} {data.user.last_name}</span>
             <div id="dropdown-1" class="dropdown dropdown-tip dropdown-anchor-right">
                 <ul class="dropdown-menu">
                     <li><a href="mailto:jessicashu127@gmail.com?subject=PokerBot">Contact</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
-            <img data-dropdown='#dropdown-1' data-horizontal-offset="-10" class='profile-pic' src='{{ data.user.profile_picture_url }}' />
+            <!--<img data-dropdown='#dropdown-1' data-horizontal-offset="-10" class='profile-pic' src='{ data.user.profile_picture_url }' />-->
+            <img data-dropdown='#dropdown-1' data-horizontal-offset="-10" class='profile-pic' src='https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.160.160/p160x160/936075_10152245765973302_1488364210962623994_n.jpg?oh=b20c708aa78d5bccab0588d49c1f5e9a&oe=54CB4246&__gda__=1421606353_852d5c116a31824ce410b675fc895cce' />
         </span>
      </div>
     <div class='pure-u-1 centered-wrapper'>
         <div class='pure-g centered-view section'>
             <div class='pure-u-1-2 money-view-top'>
                  <div class='balance' id='balance'>
-                    Balance: {{data.balance}}
+                    Balance: $6.74
                 </div>
                 <ul>
                     <li data="Vanguard Total Stock Market Index Fund Investor Shares">
                         <a target="_blank" href="http://www.google.com/finance?q=MUTF%3AVTSMX">
-                            {{data.stock_balance}} Stocks (VTSMX)</a></li>
+                            $55.23 Stocks (VTSMX)</a></li>
                     <li data="Vanguard Short-Term Bond ETF">
                         <a target="_blank" href="https://www.google.com/finance?q=NYSEARCA%3ABSV">
-                        {{data.bond_balance}} Bonds (BSV)</a></li>
+                        $4.23 Bonds (BSV)</a></li>
                     </ul>
                 <div id='percent'>
-                    {{data.stock_percentage}}% Stocks and {{100 - data.stock_percentage}}% Bonds
+                    <!--{data.stock_percentage}% Stocks and {100 - data.stock_percentage}% Bonds-->
+                    95% Stocks and 5% Bonds
                 </div>
                 <div id='slider'>
                 </div>
