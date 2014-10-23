@@ -29,9 +29,7 @@ def requires_auth(f):
 @app.route('/')
 @requires_auth
 def index():
-    print session
-    token = "".join(random.sample(session['access_token'], 10))
-    return render_template('index.html', pages=list(mongo.db.pages.find()), token=token)
+    return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
 
 @app.route('/login')
 def login():
@@ -56,16 +54,19 @@ def connect():
     oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='', redirect_uri='postmessage')
     credentials = oauth_flow.step2_exchange(request.data)
   except FlowExchangeError:
-    print "flow exchange error"
+    print "Flow exchange error"
 
   session['access_token'] = credentials.access_token
   session['gplus_id'] = credentials.id_token['sub']
-  print session
-  return render_template('index.html', pages=list(mongo.db.pages.find()))
+  session['token'] = "".join(random.sample(session['access_token'], 10))
+  new_user_id = mongo.db.users.save({"access_token": session['access_token'], 
+                                     "gplus_id": session['gplus_id'],
+                                     "weebly_token": token})
+  print session, new_user_id
+  return render_template('index.html', pages=list(mongo.db.pages.find()), token=token)
 
-@app.route('/disconnect')
-def disconnect():
-  # Only disconnect a connected user.
+@app.route('/logout')
+def logout():
   access_token = session.get('access_token')
   if access_token is None:
     return json.dumps({'error':'Current user not connected.'})
@@ -76,11 +77,6 @@ def disconnect():
 
   session.clear()
   return redirect(url_for('index'))
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
 
 @app.route('/api/page/<page_id>', methods=['PUT'])
 @requires_auth
@@ -102,13 +98,13 @@ def delete_page(page_id):
 @requires_auth
 def get_page(page_id):
   print page_id
-  return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), default=json_util.default)
+  return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), indent=4, default=json_util.default)
 
 @app.route('/api/pages', methods=['GET'])
 @requires_auth
 def get_all_pages():
   for doc in mongo.db.pages.find():
-    page_json = json.dumps(doc, sort_keys=True, indent=4, default=json_util.default)
+    page_json = json.dumps(doc, indent=4, default=json_util.default)
   return page_json
 
 @app.route('/api/pages', methods=['POST'])
@@ -166,6 +162,11 @@ def auth():
     user.name = profile['first_name'] + profile['last_name']
 
     mongo.db.session.add(user)
+    return redirect(url_for('index'))
+
+@app.route('/logoutfb')
+def logoutfb():
+    session.clear()
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
