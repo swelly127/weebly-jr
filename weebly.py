@@ -75,41 +75,41 @@ def logout():
     return redirect(url_for('index'))
 
 def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-      if not session.get('gplus_id'):
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    if not session.get('gplus_id'):
+      return redirect(url_for('login'))
+    return f(*args, **kwargs)
+  return decorated
 
 @app.route('/api/page/<page_id>', methods=['PUT'])
 @requires_auth
 def update_page(page_id):
-    print request.form
-    if request.form.get('name'):
-      mongo.db.pages.save({"_id": ObjectId(page_id), "name":request.form.get('name')})
-    if request.form.get('elements'):
-      mongo.db.pages.save({"_id": ObjectId(page_id), "elements":request.form.get('elements')})
-    return json.dumps({"success":"updated!"})
+  print request.form
+  if request.form.get('name'):
+    mongo.db.pages.save({"_id": ObjectId(page_id), "name":request.form.get('name')})
+  if request.form.get('elements'):
+    mongo.db.pages.save({"_id": ObjectId(page_id), "elements":request.form.get('elements')})
+  return json.dumps({"success":"updated!"})
 
 @app.route('/api/page/<page_id>', methods=['DELETE'])
 @requires_auth
 def delete_page(page_id):
-    if mongo.db.pages.remove(ObjectId(page_id)):
-      return json.dumps({"deleted":page_id})
+  if mongo.db.pages.remove(ObjectId(page_id)):
+    return json.dumps({"deleted":page_id})
 
 @app.route('/api/page/<page_id>', methods=['GET'])
 @requires_auth
 def get_page(page_id):
-    print page_id
-    return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), default=json_util.default)
+  print page_id
+  return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), default=json_util.default)
 
 @app.route('/api/pages', methods=['GET'])
 @requires_auth
 def get_all_pages():
-    for doc in mongo.db.pages.find():
-      page_json = json.dumps(doc, sort_keys=True, indent=4, default=json_util.default)
-    return page_json
+  for doc in mongo.db.pages.find():
+    page_json = json.dumps(doc, sort_keys=True, indent=4, default=json_util.default)
+  return page_json
 
 @app.route('/api/pages', methods=['POST'])
 @requires_auth
@@ -119,11 +119,13 @@ def new_page():
   new_id = mongo.db.pages.save({"name": name, "elements": elements})
   if new_id:
     return json.dumps({"success": str(new_id)})
+  else:
+    return json.dumps({"failure": "insertion failed"})
 
 @app.route('/loginfb')
 def loginfb():
-    args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
-    return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
+  args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
+  return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
 
 @app.route('/auth')
 def auth():
