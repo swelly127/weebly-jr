@@ -11,7 +11,9 @@ from flask import Flask, flash, jsonify, redirect, render_template, request, ses
 from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
+app.config['MONGO_URI'] = ENV['MONGOLAB_URI']
 mongo = PyMongo(app)
+
 
 app.debug = True
 app.secret_key = secret_key
