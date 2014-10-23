@@ -45,30 +45,32 @@
           </div>
         {% endfor %}
       </div>
-      {% for row in pages.0.elements %}
-      <table>
-        <tbody>
-          <tr>
-            {% for c in row %}
-              {% if not c %}
-                <td>
-                  <div class="element image-grid">
-                    <div class="delete"></div>
-                  </div>
-                </td>
-              {% else %}
-                <td>
-                  <div class="element text-grid">
-                    <div class="delete"></div>
-                    <div>{{c}}</div>
-                  </div>
-                </td>
-              {% endif %}
-            {% endfor %}
-          </tr>
-        </tbody>
-      </table>
-      {% endfor %}
+      {% if pages.0 %}
+        {% for row in pages.0.elements %}
+        <table>
+          <tbody>
+            <tr>
+              {% for c in row %}
+                {% if not c %}
+                  <td>
+                    <div class="element image-grid">
+                      <div class="delete"></div>
+                    </div>
+                  </td>
+                {% else %}
+                  <td>
+                    <div class="element text-grid">
+                      <div class="delete"></div>
+                      <div>{{c}}</div>
+                    </div>
+                  </td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+        {% endfor %}
+      {% endif %}
     </div>
   </body>
 </html>
