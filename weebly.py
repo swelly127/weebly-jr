@@ -30,7 +30,7 @@ def requires_auth(f):
 @requires_auth
 def index():
     print session
-    return render_template('index.html', pages=list(mongo.db.pages.find()))
+    return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['access_token'])
 
 @app.route('/login')
 def login():

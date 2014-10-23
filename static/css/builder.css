@@ -25,6 +25,13 @@ body {
 	margin-left: 20px;
 }
 
+#header #api {
+	width: 20%;
+	float: right;
+	line-height: 45px;
+	font-weight: 600;
+}
+
 #sidebar {
 	font-family: "Rounded";
 	margin-top: -1px;
