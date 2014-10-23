@@ -4,6 +4,7 @@ import settings
 
 from bson import *
 from bson import json_util
+from functools import wraps
 
 from oauth2client.client import *
 from settings import *
@@ -19,16 +20,19 @@ app.debug = True
 app.secret_key = secret_key
 
 @app.route('/')
+@requires_auth
 def index():
     print session
+    return render_template('index.html', pages=list(mongo.db.pages.find()))
+
+@app.route('/login')
+def login():
     data = {}
-    if 'gplus_id' not in session:
-      data['client_id'] = GOOGLE_APP_ID
-      data['redirect_uri'] = REDIRECT_URI
-      data['certificate'] = ''.join(random.choice("0123456789") for x in xrange(16))
-      session['certificate'] = data['certificate']
-      return render_template('logged_out.html', data=data)
-    return render_template('logged_in.html', pages=list(mongo.db.pages.find()))
+    data['client_id'] = GOOGLE_APP_ID
+    data['redirect_uri'] = REDIRECT_URI
+    data['certificate'] = ''.join(random.choice("0123456789") for x in xrange(16))
+    session['certificate'] = data['certificate']
+    return render_template('login.html', data=data)
 
 @app.route('/connect', methods=['POST'])
 def connect():
@@ -49,7 +53,7 @@ def connect():
   session['access_token'] = credentials.access_token
   session['gplus_id'] = credentials.id_token['sub']
   print session
-  return render_template('logged_in.html', pages=list(mongo.db.pages.find()))
+  return render_template('index.html', pages=list(mongo.db.pages.find()))
 
 @app.route('/disconnect')
 def disconnect():
@@ -65,8 +69,59 @@ def disconnect():
   session.clear()
   return redirect(url_for('index'))
 
-@app.route('/login')
-def login():
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+      if not session.get('gplus_id'):
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route('/api/page/<page_id>', methods=['PUT'])
+@requires_auth
+def update_page(page_id):
+    print request.form
+    if request.form.get('name'):
+      mongo.db.pages.save({"_id": ObjectId(page_id), "name":request.form.get('name')})
+    if request.form.get('elements'):
+      mongo.db.pages.save({"_id": ObjectId(page_id), "elements":request.form.get('elements')})
+    return json.dumps({"success":"updated!"})
+
+@app.route('/api/page/<page_id>', methods=['DELETE'])
+@requires_auth
+def delete_page(page_id):
+    if mongo.db.pages.remove(ObjectId(page_id)):
+      return json.dumps({"deleted":page_id})
+
+@app.route('/api/page/<page_id>', methods=['GET'])
+@requires_auth
+def get_page(page_id):
+    print page_id
+    return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), default=json_util.default)
+
+@app.route('/api/pages', methods=['GET'])
+@requires_auth
+def get_all_pages():
+    for doc in mongo.db.pages.find():
+      page_json = json.dumps(doc, sort_keys=True, indent=4, default=json_util.default)
+    return page_json
+
+@app.route('/api/pages', methods=['POST'])
+@requires_auth
+def new_page():
+  name = request.form.get('name') or "Page"
+  elements = request.form.get('elements') or DEFAULT_ELEMENTS
+  new_id = mongo.db.pages.save({"name": name, "elements": elements})
+  if new_id:
+    return json.dumps({"success": str(new_id)})
+
+@app.route('/loginfb')
+def loginfb():
     args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
     return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
 
@@ -76,7 +131,6 @@ def auth():
     args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
     args["client_secret"] = FACEBOOK_APP_SECRET  
     args["code"] = request.args.get("code")
-
 
     """ Get access token """
     response_str = urllib.urlopen(
@@ -110,57 +164,7 @@ def auth():
     user.name = profile['first_name'] + profile['last_name']
 
     mongo.db.session.add(user)
-    mongo.db.session.commit()
-
     return redirect(url_for('index'))
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
-
-@app.route('/api/page/<page_id>', methods=['PUT'])
-def update_page(page_id):
-    if not session.get('gplus_id'):
-        return render_template('logged_out.html')
-    print request.form
-    if request.form.get('name'):
-      mongo.db.pages.save({"_id": ObjectId(page_id), "name":request.form.get('name')})
-    if request.form.get('elements'):
-      mongo.db.pages.save({"_id": ObjectId(page_id), "elements":request.form.get('elements')})
-    return json.dumps({"success":"updated!"})
-
-@app.route('/api/page/<page_id>', methods=['DELETE'])
-def delete_page(page_id):
-    if not session.get('gplus_id'):
-        return render_template('logged_out.html')
-    if mongo.db.pages.remove(ObjectId(page_id)):
-      return json.dumps({"deleted":page_id})
-
-@app.route('/api/page/<page_id>', methods=['GET'])
-def get_page(page_id):
-    if not session.get('gplus_id'):
-        return render_template('logged_out.html')
-    print page_id
-    return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), default=json_util.default)
-
-@app.route('/api/pages', methods=['GET'])
-def get_all_pages():
-    if not session.get('gplus_id'):
-        return render_template('logged_out.html')
-    for doc in mongo.db.pages.find():
-      page_json = json.dumps(doc, sort_keys=True, indent=4, default=json_util.default)
-    return page_json
-
-@app.route('/api/pages', methods=['POST'])
-def new_page():
-  if not session.get('gplus_id'):
-    return render_template('logged_out.html')
-  name = request.form.get('name') or "Page"
-  elements = request.form.get('elements') or DEFAULT_ELEMENTS
-  new_id = mongo.db.pages.save({"name": name, "elements": elements})
-  if new_id:
-    return json.dumps({"success": str(new_id)})
 
 if __name__ == "__main__":
 	app.run(debug=True, port=4000)

@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src='static/js/index.js'></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+
+    <link rel="stylesheet" href="static/css/builder.css">
+  </head>
+  <body>
+    <div id="header">
+      <img src="static/img/weebly-logo.png"/>
+    </div>
+    <div id='sidebar'>
+      <div class="sidebar-header">TEMPLATES</div>
+      <div id="page-links">
+        {% for p in pages %}
+        <div class="page-link" data-id="{{p._id}}" href="#">
+          <div class="page-name">{{p.name}}</div>
+          <div class="page-edit"></div>
+        </div>
+        {% endfor %}
+        <div class="page-link" id="new-page-button" href="#">
+          <div class="page-name">ADD NEW PAGE</div>
+          <div class="page-edit"></div>
+        </div>
+      </div>
+      <div class="sidebar-header">ELEMENTS</div>
+      <div id="element-icons">
+        <div><div class="element-img"></div>TITLE</div>
+        <div><div class="element-img"></div>TEXT</div>
+        <div><div class="element-img"></div>IMAGE</div>
+        <div><div class="element-img"></div>NAV</div>
+      </div>
+      <div class="sidebar-header">SETTINGS</div>
+      <div id="site-grid">SITE GRID
+        <span id='switch'></span>
+      </div>
+    </div>
+    <div id="content">
+      <div id="horizontal-page-nav">
+        {% for m in pages %}
+          <div class="page-link" data-id="{{m._id}}" href="#">
+            {{m.name}}
+          </div>
+        {% endfor %}
+      </div>
+      {% if pages|length >= 1 %}
+        {% for row in pages.0.elements %}
+        <table>
+          <tbody>
+            <tr>
+              {% for c in row %}
+                {% if not c %}
+                  <td>
+                    <div class="element image-grid">
+                      <div class="delete"></div>
+                    </div>
+                  </td>
+                {% else %}
+                  <td>
+                    <div class="element text-grid">
+                      <div class="delete"></div>
+                      <div>{{c}}</div>
+                    </div>
+                  </td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </body>
+</html>
+
+
