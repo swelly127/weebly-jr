@@ -36,15 +36,15 @@ $(document).ready(function() {
         })
 
         $("#page-links .page-link").mouseover(function(){
-            $(this).parent().find(".page-name").css("width", "90px")
+            $(this).find(".page-name").css("width", "90px")
         })
 
         $("#page-links #new-page-button").mouseover(function(){
-            $(this).parent().find(".page-name").css("width", "100px")
+            $(this).find(".page-name").css("width", "100px")
         })
 
         $("#page-links .page-link").mouseleave(function(){
-            $(this).parent().find(".page-name").css("width", "125px")
+            $(this).find(".page-name").css("width", "125px")
         })
 
         $("#page-links #new-page-button .page-name").click( function(){
