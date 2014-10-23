@@ -48,7 +48,8 @@ $(document).ready(function() {
                     $(this).parent().parent().prepend('<div class="page-link" href="#">\
                                 <div class="page-name">'+$(this).text()+'</div>\
                                 <div class="page-edit"></div></div>');
-                    $("#horizontal-page-nav").prepend("<div class='page-link' \
+                    $("#horizontal-page-nav .page-link").removeClass("active");
+                    $("#horizontal-page-nav").prepend("<div class='page-link active' \
                         data-id href='#''>"+$(this).text()+"</div>")
                     $(this).css("color","grey").text("ADD NEW PAGE");
                     return;
