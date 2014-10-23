@@ -20,6 +20,7 @@ app.secret_key = secret_key
 # TODO: 
 # Stop the weird aggressive login
 # Bind content deletions
+# Fix get all pages json
 # Make content updatable/editable
 # Make active tab do ajax call to display the active page rather than default
 # Get API Key from mongo database so it doesn't keep changing
@@ -64,11 +65,16 @@ def connect():
     credentials = oauth_flow.step2_exchange(request.data)
   except FlowExchangeError:
     print "Flow exchange error"
-
-  session['access_token'] = credentials.access_token
-  session['user_id'] = credentials.id_token['sub']
-  session['token'] = "".join(random.sample(session['access_token'], 10))
-  new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
+  current_user = mongo.db.sessions.find_one({"user_id": credentials.id_token['sub'], "auth_type": "google"})
+  if current_user.count() == 1:
+    session['access_token'] = current_user["access_token"]
+    session['user_id'] = current_user["user_id"]
+    session['token'] = current_user["weebly_token"]
+  else:
+    session['access_token'] = credentials.access_token
+    session['user_id'] = credentials.id_token['sub']
+    session['token'] = "".join(random.sample(session['access_token'], 10))
+    new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
                                      "user_id": session['user_id'],
                                      "weebly_token": session['token'],
                                      "auth_type": "google"})
@@ -83,6 +89,7 @@ def logout():
   if request.args.get('delete', ''): # deletes account (mostly for testing)
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     urllib.urlopen(url)
+    mongo.db.sessions.remove({"access_token": access_token}):
   session.clear()
   return redirect(url_for('index'))
 
