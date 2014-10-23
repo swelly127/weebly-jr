@@ -49,7 +49,7 @@ def connect():
   session['access_token'] = credentials.access_token
   session['gplus_id'] = credentials.id_token['sub']
   print session
-  return render_template('logged_in.html', pages=mongo.db.pages.find())
+  return render_template('logged_in.html', pages=list(mongo.db.pages.find()))
 
 @app.route('/disconnect')
 def disconnect():
