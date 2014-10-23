@@ -89,7 +89,7 @@ def logout():
   if request.args.get('delete', ''): # deletes account (mostly for testing)
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     urllib.urlopen(url)
-    mongo.db.sessions.remove({"access_token": access_token}):
+    mongo.db.sessions.remove({"access_token": access_token})
   session.clear()
   return redirect(url_for('index'))
 
