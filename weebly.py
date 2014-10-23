@@ -63,7 +63,7 @@ def connect():
                                      "gplus_id": session['gplus_id'],
                                      "weebly_token": session['token']})
   print session, new_user_id
-  return render_template('index.html', pages=list(mongo.db.pages.find()), token=token)
+  return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
 
 @app.route('/logout')
 def logout():
