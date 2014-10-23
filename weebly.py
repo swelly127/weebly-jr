@@ -3,6 +3,7 @@ import cgi, json, os, random, requests, urllib
 from bson import json_util
 from functools import wraps
 from oauth2client.client import *
+from bson import *
 from flask import *
 from flask.ext.pymongo import PyMongo
 
@@ -77,6 +78,7 @@ def logout():
 @app.route('/api/page/<page_id>', methods=['PUT'])
 @requires_auth
 def update_page(page_id):
+  # db.pages.update({"name":"secod one", "elements":["teeheee"]}, { $set: {"elements.$" : "RUH ROH"} })
   print request.form
   if request.form.get('name'):
     mongo.db.pages.save({"_id": ObjectId(page_id), "name":request.form.get('name')})
