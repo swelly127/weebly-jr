@@ -59,9 +59,9 @@ def connect():
   session['access_token'] = credentials.access_token
   session['gplus_id'] = credentials.id_token['sub']
   session['token'] = "".join(random.sample(session['access_token'], 10))
-  new_user_id = mongo.db.users.save({"access_token": session['access_token'], 
+  new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
                                      "gplus_id": session['gplus_id'],
-                                     "weebly_token": token})
+                                     "weebly_token": session['token']})
   print session, new_user_id
   return render_template('index.html', pages=list(mongo.db.pages.find()), token=token)
 
@@ -161,7 +161,7 @@ def auth():
     user.access_token = access_token
     user.name = profile['first_name'] + profile['last_name']
 
-    mongo.db.session.add(user)
+    mongo.db.sessions.add(user)
     return redirect(url_for('index'))
 
 @app.route('/logoutfb')
