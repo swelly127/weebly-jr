@@ -65,10 +65,12 @@ body {
 	cursor: pointer;
 	position: absolute;
 	float: right;
+}
+
+.page-edit:hover {
 	background-position: -30px -12px;
 	background-image: url("../img/edit-buttons.png")
 }
-
 
 #page-links #new-page-button {
 	background-color: inherit;
