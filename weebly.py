@@ -7,7 +7,7 @@ from bson import json_util
 
 from oauth2client.client import *
 from settings import *
-from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
+from flask import *
 from flask.ext.pymongo import PyMongo
 
 app = Flask(__name__)
