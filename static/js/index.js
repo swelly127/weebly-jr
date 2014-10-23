@@ -35,6 +35,14 @@ $(document).ready(function() {
             $(this).toggleClass("blue-switch");
         })
 
+        $("#page-links .page-link").mouseover(function(){
+            $(this).parent().find(".page-name").css("width", "90px")
+        })
+
+        $("#page-links #new-page-button").mouseover(function(){
+            $(this).parent().find(".page-name").css("width", "100px")
+        })
+
         $("#page-links #new-page-button .page-name").click( function(){
             $(this).attr('contenteditable','true')
             $(this).focus().text("").css("color","white")

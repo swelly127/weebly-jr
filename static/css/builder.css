@@ -48,12 +48,6 @@ body {
 }
 
 .page-name {
-	width:90px;
-	margin-left: 10px;
-}
-
-#new-page-button .page-name {
-	width:100px;
 	margin-left: 10px;
 }
 
@@ -65,11 +59,7 @@ body {
 	cursor: pointer;
 	position: absolute;
 	float: right;
-}
-
-.page-edit:hover {
 	background-position: -30px -12px;
-	background-image: url("../img/edit-buttons.png")
 }
 
 #page-links #new-page-button {
@@ -82,6 +72,10 @@ body {
 	margin-left: 120px;
 	width: 20px;
 	background-position: -90px -12px;
+}
+
+.page-link:hover .page-edit {
+	background-image: url("../img/edit-buttons.png")
 }
 
 .title {
