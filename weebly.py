@@ -19,14 +19,14 @@ app.secret_key = secret_key
 
 # TODO: 
 # Stop the weird aggressive login
-# Bind content deletions
+# Bind content deletions and make content updatable/editable
 # Fix get all pages json
-# Make content updatable/editable
 # Make active tab do ajax call to display the active page rather than default
-# Get API Key from mongo database so it doesn't keep changing
 # Add API Key requirement to RestAPI
 # Better API return values and JSON success functions
 # Persist more user information
+
+# Facebook login (?)
 
 def requires_auth(f):
   @wraps(f)
@@ -52,14 +52,8 @@ def login():
 
 @app.route('/connect', methods=['POST'])
 def connect():
-  """Exchange the one-time authorization code for a token and
-  store the token in the session."""
-
-  print request, session['certificate']
-  # Ensure that the request isn't a forgery
   if request.args.get('certificate', '') != session['certificate']:
     return json.dumps({'error':'Invalid certificate.'})
-
   try:
     oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='', redirect_uri='postmessage')
     credentials = oauth_flow.step2_exchange(request.data)
@@ -133,11 +127,13 @@ def new_page():
   else:
     return json.dumps({"failure": "insertion failed"})
 
+# Not working yet
 @app.route('/loginfb')
 def loginfb():
   args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
   return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
 
+# Not working yet
 @app.route('/auth')
 def auth():
     """ Extract authorization token """
@@ -179,6 +175,7 @@ def auth():
     mongo.db.sessions.add(user)
     return redirect(url_for('index'))
 
+# Not working yet
 @app.route('/logoutfb')
 def logoutfb():
     session.clear()
