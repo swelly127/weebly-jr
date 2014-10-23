@@ -66,7 +66,7 @@ def connect():
   except FlowExchangeError:
     print "Flow exchange error"
   current_user = mongo.db.sessions.find_one({"user_id": credentials.id_token['sub'], "auth_type": "google"})
-  if current_user.count() == 1:
+  if current_user:
     session['access_token'] = current_user["access_token"]
     session['user_id'] = current_user["user_id"]
     session['token'] = current_user["weebly_token"]
