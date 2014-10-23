@@ -24,11 +24,6 @@ function finishTransaction(response) {
         var trans = '<tr>';
             trans += '<td>' + response.timestamp + '</td>';
             trans += '<td>$' + response.balance + '</td>';
-            trans += '<td>$' + response.stock_balance + '</td>';
-            trans += '<td>$' + response.bond_balance + '</td>';
-            trans += '<td class=' + stock_css + '>$' + Math.abs(response.stock_change) + '</td>';
-            trans += '<td class=' + bond_css + '>$' + Math.abs(response.bond_change) + '</td>';
-            trans += '<td>' + response.type + '</td>';
             trans += '</tr>';
         $('#trans').prepend(trans);
         lastColumns.push(response.balance);
@@ -67,31 +62,8 @@ function start(user_balance) {
 
 function raise() {
     var amount = $('#dwamount').val();
-
 };
 
-function call() {};
-
-function fold() {};
-
-function withdraw() {
-    if (locked) return;
-    locked = true;
-    $('#dw_response').text('Withdrawing...');
-    var withdraw_amount = $("#dwamount").val();
-    lastAmount = withdraw_amount;
-
-    var post_parameters = {
-        amount: withdraw_amount,
-    };
-
-    $.post("/withdraw", post_parameters).done(finishTransaction
-    ).fail(function(error) {
-        $("#dw_response").text(error);
-        $("#dw_response").css('color', 'red');
-        locked = false;
-    });
-};
 
 function deposit() {
     if (locked) return;
@@ -113,73 +85,88 @@ function deposit() {
     });
 };
 
-/*$(document).ready(function() {
-        var stock_perc = "data.stock_percentage"; // {{data.stock_percentage}}
-        if ($('#slider')) {
-            $('#slider').slider({
-                range: 'max',
-                min: 1,
-                max: 100,
-                value: "data.stock_percentage", // {{data.stock_percentage}}
-                slide: function( event, ui ) {
-                    stock_perc = ui.value;
-                    $('#percent').html( ui.value + '% Stocks and ' + (100-ui.value) + '% Bonds' );
-                }
-            });
-
-            $('#slider').mouseup(function() {
-                $.post('/update_holdings', {stock: stock_perc});
-            });
+function finishLogin(response) {
+    alert(response);
+}
 
 
-            chart = c3.generate({
-                bindto: '#chart',
-                data: {
-                    columns: [
-                        ['Balance', 0, 0, 0, 0, 0]
-                    ]
-                }
-            });
+$(document).ready(function() {
 
-            $.post('/get_payments').done(function(response) {
-                var data = response.data;
-                var table = '';
+        $("div.element .delete").mousedown(function() {
+            $(this).css("background-position-x", "-52px");
+            $(this).parent().css("border", "5px red solid").fadeOut()
+        })
 
-                columns = [];
-                for (var i = 0;i < data.length && i < 15;i++) {
-                    var update = data[i];
-                    var stock_css = 'positive';
-                    var bond_css = 'positive';
-                    if (update.stock_change < 0) {
-                        stock_css = 'negative';
-                    } else if (update.stock_change === 0) {
-                        stock_css = '';
-                    }
-                    if (update.bond_change < 0) {
-                        bond_css = 'negative';
-                    } else if (update.bond_change === 0) {
-                        bond_css = '';
-                    }
-                    table += '<tr>';
-                    table += '<td>' + update.timestamp + '</td>';
-                    table += '<td>$' + update.balance + '</td>';
-                    table += '<td>$' + update.stock_balance + '</td>';
-                    table += '<td>$' + update.bond_balance + '</td>';
-                    table += '<td class=' + stock_css + '>$' + Math.abs(update.stock_change) + '</td>';
-                    table += '<td class=' + bond_css + '>$' + Math.abs(update.bond_change) + '</td>';
-                    table += '<td>' + update.type + '</td>';
-                    table += '</tr>';
-                    columns.push(update.balance);
-                }
-                columns.push("Balance")
-                columns = columns.reverse();
-                chart.load({columns: [columns]});
-                lastColumns = columns;
-
-
-                $('#trans').html(table);
-            });
-
+        function divClicked() {
+            var divHtml = $(this).text();
+            var editableText = $("<textarea class='page-link' />");
+            editableText.val(divHtml);
+            $(this).replaceWith(editableText);
+            editableText.focus();
+            // setup the blur event for this new textarea
+            editableText.blur(editableTextBlurred);
         }
-}); */
 
+        function editableTextBlurred() {
+            var html = $(this).val();
+            var viewableText = $("<div class='page-link'>");
+            viewableText.html(html);
+            $(this).replaceWith(viewableText);
+            // setup the click event for this new div
+            $(viewableText).click(divClicked);
+        };
+
+        $("#switch").click(function(){
+            $(this).toggleClass("blue-switch");
+        })
+
+        $("#page-links #new-page-button .page-name").click( function(){
+            $(this).attr('contenteditable','true')
+            $(this).focus();
+            $(this).text("")
+            $(this).css("color","white")
+            $(this).keypress(function(e) {
+                if(e.which == 13) {
+                    e.preventDefault();
+                    $(this).attr('contenteditable','false')
+                    params = {"name": $(this).text()};
+                    $.post('/api/pages', params).done(function(response) {
+                        $(this).parent().removeAttr("id")
+                        //window.location.href = "/"
+                    })
+                }
+            });
+        });
+
+        $("#page-links .page-link .page-edit").click( function(){
+            $(this).focus();
+            $(this).parent().css("background-color", "#EA4029")
+            $(this).css("background-position-y","50px")
+            $('[data-id="'+$(this).parent().data("id")+'"]').fadeOut(500)
+            $.ajax({
+                url: '/api/page/' + $(this).parent().data("id"),
+                type: 'DELETE',
+            });
+        });
+
+        $("#page-links .page-link .page-name").not("#new-page-button").click( function(){
+            $(this).attr('contenteditable','true')
+            $(this).focus();
+            $(this).keypress(function(e) {
+                if(e.which == 13) {
+                    e.preventDefault();
+                    $(this).attr('contenteditable','false')
+                    params = {"name": $(this).text()};
+                    id = $(this).parent().data("id");
+                    $.ajax({
+                        url: '/api/page/' + id,
+                        type: 'PUT',
+                        data: params,
+                        success: function(result) {
+                            alert(result)
+                        }
+                    });
+                }
+            });
+        });
+}); 

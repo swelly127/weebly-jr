@@ -1,0 +1,28 @@
+
+body {
+	background-color:#18578E; 
+	width:100%; 
+	height:100%;
+}
+
+img#weebly {
+	margin-left:30%;
+	width:40%;
+	margin-top:20%;
+}
+
+img#loginButton {
+	width:100%;
+	margin-top:10px;
+}
+
+button.g-signin {
+	margin: 0 35%;
+	width: 30%;
+	background-color: transparent;
+	border: none;
+}
+
+button.g-signin:active {
+	border: none;
+}

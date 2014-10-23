@@ -1,12 +1,12 @@
 secret_key = "sushi4ever"
-client_id = 1880
-client_secret = "pRhKhB6c7SBfMm6TxnT8rdcEFABYbPwh"
 
-BLOWERIO_URL = "https://cb212370-a754-4f04-815a-197c945e818b:baYy-slsR52MuBL6sZkSoA@api.blower.io/"
-SENDGRID_USERNAME = "app30024622@heroku.com"
-SENDGRID_PASSWORD = "dktq913a"
+WEEBLY_TOKEN = "AnwTFbSfRjVcPwmLZa9sdZ5WeTctj4T6"
 
-POSTGRES_DB = "postgres://yfwbycctpquser:s5V6ajq-nR-J1y_CZDh_of45NS@ec2-54-83-201-96.compute-1.amazonaws.com:5432/dpl8ucn1u1c2t"
+GOOGLE_APP_ID = "516087703797-5bqk46635cdvkln0077vslg1ot3rfjpe.apps.googleusercontent.com"
+GOOGLE_APP_SECRET = "1-YwUXZ0rZp_H6l09FFGqKJD"
 
-POKERBOT_TOKEN = "AnwTFbSfRjVcPwmLZa9sdZ5WeTctj4T6"
-OWNER_NUMBER = "+14154907810"
+REDIRECT_URI = "http://127.0.0.1:4000/oauth"
+
+AUTH_URL = "https://accounts.google.com/o/oauth2/auth",
+TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
+LOGIN_URL = "https://www.googleapis.com/auth/plus.login"

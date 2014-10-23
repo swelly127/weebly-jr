@@ -1,27 +1,41 @@
-<div class='pure-g' style="background-color:#FCFCFC">
-    <div class='pure-u-1 section header' style="background-color: #FCFCFC; color: MidnightBlue;">
-        <span class='logo' style="color: MidnightBlue;">
-            <img class='fa' width="50" src="static/img/robot.png"/> PokerBot
-        </span>
-        <a class="venmo-login pure-button pure-button-primary"
-           href="https://api.venmo.com/v1/oauth/authorize?client_id={{data.client_id}}&scope=make_payments,access_email,access_profile&response_type=code">
-            Log in with <img class='venmo-login-logo' src='static/img/venmologo.png' />
-        </a>
-    </div>
+<head>
+  <script type="text/javascript">
+	  (function() {
+	    var po = document.createElement('script');
+	    po.type = 'text/javascript'; po.async = true;
+	    po.src = 'https://plus.google.com/js/client:plusone.js';
+	    var s = document.getElementsByTagName('script')[0];
+	    s.parentNode.insertBefore(po, s);
+	  })();
+  </script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
+	<link rel="stylesheet" href="static/css/logged_out.css">
+</head>
+<body>
+    <img src="static/img/weebly-full-logo.png" id="weebly">
+    <button class="g-signin" data-scope="https://www.googleapis.com/auth/plus.login" data-theme="dark"
+    	data-cookiepolicy="single_host_origin" data-clientId="{{data.client_id}}" data-callback="loginCallback">
+      <img src="static/img/google-oauth.png" id="loginButton">
+    </button>
+</body>
 
-    <div class='pure-u-1 section preview'>
-        <h1 id='preview'>
-            PokerBot wants to play with you!
-        </h1>
-        <div class='pure-g'>
-            <div class='pure-u-1-4'>
-            </div>
-            <div class='pure-u-1-2'>
-                <img class='screenshot' src='static/img/pokerbot.png' />
-            </div>
-            <div class='pure-u-1-4'>
-            </div>
-        </div>
-    </div>
-    {% include 'footer.html' %}
-</div>
+<script type="text/javascript">
+
+function loginCallback(authResult) {
+  if (authResult['access_token']) {
+		$.ajax({
+			type: 'POST',
+			url: window.location.href + 'connect?certificate={{data.certificate}}',
+			contentType: 'application/octet-stream; charset=utf-8',
+			success: function(result) {
+		  		window.location.href = "/"
+			},
+			processData: false,
+			data: authResult.code
+		});
+  } else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  }
+}
+
+</script>

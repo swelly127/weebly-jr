@@ -1,1 +1,1 @@
-web: gunicorn pokerbot:app --log-file=-
+web: gunicorn weebly:app --log-file=-

@@ -1,97 +1,104 @@
-<div class='pure-g'>
-    <div class='pure-u-1 section header'>
-        <a class='logo' href='/'>
-            <img class='fa' width="50" src="static/img/robot.png"/> PokerBot
-        </a>
-        <span class='venmo-login'>
-            <!--<span class='user-name'>{data.user.first_name} {data.user.last_name}</span>-->
-            <span class='user-name'>Jessica Shu<div id="balance">523 Chips</div></span>
-            <div id="dropdown-1" class="dropdown dropdown-tip dropdown-anchor-right">
-                <ul class="dropdown-menu">
-                    <li><a href="mailto:jessicashu127@gmail.com?subject=PokerBot">Contact</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-            </div>
-            <!--<img data-dropdown='#dropdown-1' data-horizontal-offset="-10" class='profile-pic' src='{ data.user.profile_picture_url }' />-->
-            <img data-dropdown='#dropdown-1' data-horizontal-offset="-10" class='profile-pic' src='https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.160.160/p160x160/936075_10152245765973302_1488364210962623994_n.jpg?oh=b20c708aa78d5bccab0588d49c1f5e9a&oe=54CB4246&__gda__=1421606353_852d5c116a31824ce410b675fc895cce' />
-        </span>
-     </div>
-    <div class='pure-u-1 centered-wrapper'>
-        <div class='centered-view section'>
-            <div class='pure-u-1-2 money-view-top'>
-                <div id="table_cards">
-                    <h3 style="text-align:center;">Table Cards</h3>
-                    <img src="static/img/cards/10Spades.png">
-                    <img src="static/img/cards/4Clubs.png">
-                    <img src="static/img/cards/5Clubs.png">
-                    <img src="static/img/cards/BlueVertical.png">
-                    <img src="static/img/cards/BlueVertical.png">
-                </div>
-                <div id="game-info">Pot: 0 • Small Blind: 20 • Big Blind: 40</div>
-                <div class='dwbutton'>
-                    <form class='pure-form' id="start_options">
-                        <!--<div id='slider'></div>-->
-                        <input type='button' class='pure-button pure-button-primary' id="new-game-button" value='New Game' onClick="start(24)" />
-                        <input type='button' class='pure-button pure-button-primary' value='Add 100 Chips' onClick="buy()" />
-                    </form>
-                    <form class='pure-form hidden' id="move_options">
-                        <!--<div id='slider'></div>-->
-                        $ <input id='dwamount' type='text' placeholder='100.00' style="width:30%"/>
-                        <input type='button' class='pure-button pure-button-primary' value='Raise' onClick="raise()" />
-                        <input type='button' class='pure-button pure-button-primary' value='Call' onClick="call()" />
-                        <input type='button' class='pure-button pure-button-primary' value='Fold' onClick="fold()" />
-                    </form>
-                    <div id='dw_response'>Dealer raises 20. Please raise, call or fold.</div>
-                </div>
-                <div style="width:420px;margin: auto;">
-                    <div id="player_cards">
-                        <h3 style="text-align:center;">Your Cards</h3>
-                        <img src="static/img/cards/14Spades.png">
-                        <img src="static/img/cards/14Hearts.png">
-                    </div>
-                    <div id="dealer_cards">
-                        <h3 style="text-align:center;">Dealer Cards</h3>
-                        <img src="static/img/cards/BlueVertical.png">
-                        <img src="static/img/cards/BlueVertical.png">
-                    </div>
-                </div>
-            </div>
-            <div class='pure-u-1-2'>
-                <div id='chart'></div>
-            </div>
-        </div>
-    </div>
-    <div class='pure-u-1 centered-wrapper'>
-        <div class='centered-view'>
-            <h2>Past Games</h2>
-            <table class="pure-table pure-table-horizontal transaction-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Pot</th>
-                        <th>Best Hand</th>
-                        <th>Winner</th>
-                        <th>Balance Change</th>
-                    </tr>
-                </thead>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src='static/js/index.js'></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 
-                <tbody id="trans"><tr>
-                    <th>10/03/2014</th>
-                    <th>240</th>
-                    <th>3 of a Kind</th>
-                    <th>Dealer</th>
-                    <th style="color:  red;">-120</th>
-                    </tr>
-                    <tr>
-                    <th>10/03/2014</th>
-                    <th>30</th>
-                    <th>High Card</th>
-                    <th>Dealer</th>
-                    <th style="color:  red;">-10</th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <link rel="stylesheet" href="static/css/builder.css">
+  </head>
+  <body>
+    <div id="header">
+      <img src="static/img/weebly-logo.png"/>
     </div>
-    {% include 'footer.html' %}
-</div>
+    <div id='sidebar'>
+      <div class="sidebar-header">TEMPLATES</div>
+      <div id="page-links">
+        {% for p in pages %}
+        <div class="page-link" data-id="{{p._id}}" href="#">
+          <div class="page-name">{{p.name}}</div>
+          <div class="page-edit"></div>
+        </div>
+        {% endfor %}
+        <div class="page-link" id="new-page-button" href="#">
+          <div class="page-name">ADD NEW PAGE</div>
+          <div class="page-edit"></div>
+        </div>
+      </div>
+      <div class="sidebar-header">ELEMENTS</div>
+      <div id="element-icons">
+        <div><div class="element-img"></div>TITLE</div>
+        <div><div class="element-img"></div>TEXT</div>
+        <div><div class="element-img"></div>IMAGE</div>
+        <div><div class="element-img"></div>NAV</div>
+      </div>
+      <div class="sidebar-header">SETTINGS</div>
+      <div id="site-grid">SITE GRID
+        <span id='switch'></span>
+      </div>
+    </div>
+    <div id="content">
+      <div id="horizontal-page-nav">
+        {% for m in pages %}
+          <div class="page-link" data-id="{{m._id}}" href="#">
+            {{m.name}}
+          </div>
+        {% endfor %}
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div class="element image-grid">
+                <div class="delete"></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div class="element title">
+                <div class="delete"></div>
+                Add Title Here
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div class="element text-grid">
+                <div class="delete"></div>
+                <span>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</span>
+              </div>
+            </td>
+            <td>
+              <div class="element image-grid">
+                <div class="delete"></div>
+              </div>
+            </td>
+            <td>
+              <div class="element text-grid">
+                <div class="delete"></div>
+                <span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
+              </div>
+            </td>
+            <td>
+              <div class="element text-grid">
+                <div class="delete"></div>
+                <span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
+
+
