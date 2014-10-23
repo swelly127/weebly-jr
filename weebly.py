@@ -1,6 +1,6 @@
 #!/usr/local/Cellar python
 import cgi, json, os, random, requests, urllib
-from bson import *
+from bson import json_util
 from functools import wraps
 from oauth2client.client import *
 from flask import *
