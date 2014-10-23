@@ -155,7 +155,7 @@ def new_page():
   if not session.get('gplus_id'):
     return render_template('logged_out.html')
   name = request.form.get('name') or "Page"
-  elements = request.form.get('elements') or [["hello there", None, "Meow"],["another text", None, None]]
+  elements = request.form.get('elements') or DEFAULT_ELEMENTS
   new_id = mongo.db.pages.save({"name": name, "elements": elements})
   if new_id:
     return json.dumps({"success": str(new_id)})

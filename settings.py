@@ -10,3 +10,15 @@ REDIRECT_URI = "http://127.0.0.1:4000/oauth"
 AUTH_URL = "https://accounts.google.com/o/oauth2/auth",
 TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
 LOGIN_URL = "https://www.googleapis.com/auth/plus.login"
+
+DEFAULT_ELEMENTS = [[None],
+					["If you are going to use a passage of Lorem Ipsum, \
+					you need to be sure there isn't anything embarrassing hidden in the middle of text.", 
+					None, 
+					"All the Lorem Ipsum generators on the Internet tend to repeat predefined \
+					chunks as necessary, making this the first true generator on the Internet. It \
+					uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures,\
+					 to generate Lorem Ipsum which looks reasonable.",
+					"There are many variations of passages of Lorem Ipsum available, but the \
+					majority have suffered alteration in some form, by injected humour, or randomised \
+					words which don't look even slightly believable."]]

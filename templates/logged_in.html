@@ -45,58 +45,30 @@
           </div>
         {% endfor %}
       </div>
+      {% for row in pages.0.elements %}
       <table>
         <tbody>
           <tr>
-            <td>
-              <div class="element image-grid">
-                <div class="delete"></div>
-              </div>
-            </td>
+            {% for c in row %}
+              {% if not c %}
+                <td>
+                  <div class="element image-grid">
+                    <div class="delete"></div>
+                  </div>
+                </td>
+              {% else %}
+                <td>
+                  <div class="element text-grid">
+                    <div class="delete"></div>
+                    <div>{{c}}</div>
+                  </div>
+                </td>
+              {% endif %}
+            {% endfor %}
           </tr>
         </tbody>
       </table>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <div class="element title">
-                <div class="delete"></div>
-                Add Title Here
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <div class="element text-grid">
-                <div class="delete"></div>
-                <span>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</span>
-              </div>
-            </td>
-            <td>
-              <div class="element image-grid">
-                <div class="delete"></div>
-              </div>
-            </td>
-            <td>
-              <div class="element text-grid">
-                <div class="delete"></div>
-                <span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
-              </div>
-            </td>
-            <td>
-              <div class="element text-grid">
-                <div class="delete"></div>
-                <span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      {% endfor %}
     </div>
   </body>
 </html>
