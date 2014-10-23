@@ -15,9 +15,16 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = MONGO_URI
 mongo = PyMongo(app)
 
-
 app.debug = True
 app.secret_key = secret_key
+
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    if not session.get('gplus_id'):
+      return redirect(url_for('login'))
+    return f(*args, **kwargs)
+  return decorated
 
 @app.route('/')
 @requires_auth
@@ -73,14 +80,6 @@ def disconnect():
 def logout():
     session.clear()
     return redirect(url_for('index'))
-
-def requires_auth(f):
-  @wraps(f)
-  def decorated(*args, **kwargs):
-    if not session.get('gplus_id'):
-      return redirect(url_for('login'))
-    return f(*args, **kwargs)
-  return decorated
 
 @app.route('/api/page/<page_id>', methods=['PUT'])
 @requires_auth
