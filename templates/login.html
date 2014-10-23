@@ -25,10 +25,10 @@ function loginCallback(authResult) {
   if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
-			url: window.location.href + 'connect?certificate={{data.certificate}}',
+			url: window.location.href + '../connect?certificate={{data.certificate}}',
 			contentType: 'application/octet-stream; charset=utf-8',
 			success: function(result) {
-		  		window.location.href = "/"
+		  		window.location.href = "../"
 			},
 			processData: false,
 			data: authResult.code
