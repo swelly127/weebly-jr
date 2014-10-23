@@ -70,7 +70,7 @@ def connect():
   session['token'] = "".join(random.sample(session['access_token'], 10))
   new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
                                      "user_id": session['user_id'],
-                                     "weebly_token": session['token']
+                                     "weebly_token": session['token'],
                                      "auth_type": "google"})
   print session, new_user_id
   return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
