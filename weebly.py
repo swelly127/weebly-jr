@@ -70,11 +70,9 @@ def logout():
   access_token = session.get('access_token')
   if access_token is None:
     return json.dumps({'error':'Current user not connected.'})
-
-  # Execute HTTP GET request to revoke current token.
-  url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
-  urllib.urlopen(url)
-
+  if request.args.get('delete', ''): # deletes account (mostly for testing)
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+    urllib.urlopen(url)
   session.clear()
   return redirect(url_for('index'))
 
