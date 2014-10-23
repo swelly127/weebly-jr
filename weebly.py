@@ -1,15 +1,13 @@
 #!/usr/local/Cellar python
-import cgi, datetime, json, os, random, requests, urllib
-import settings
-
+import cgi, json, os, random, requests, urllib
 from bson import *
-from bson import json_util
 from functools import wraps
-
 from oauth2client.client import *
-from settings import *
 from flask import *
 from flask.ext.pymongo import PyMongo
+
+import settings
+from settings import *
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = MONGO_URI
