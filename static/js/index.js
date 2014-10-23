@@ -43,6 +43,10 @@ $(document).ready(function() {
             $(this).parent().find(".page-name").css("width", "100px")
         })
 
+        $("#page-links .page-link").mouseleave(function(){
+            $(this).parent().find(".page-name").css("width", "125px")
+        })
+
         $("#page-links #new-page-button .page-name").click( function(){
             $(this).attr('contenteditable','true')
             $(this).focus().text("").css("color","white")
