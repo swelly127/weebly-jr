@@ -17,10 +17,20 @@ mongo = PyMongo(app)
 app.debug = True
 app.secret_key = secret_key
 
+# TODO: 
+# Stop the weird aggressive login
+# Bind content deletions
+# Make content updatable/editable
+# Make active tab do ajax call to display the active page rather than default
+# Get API Key from mongo database so it doesn't keep changing
+# Add API Key requirement to RestAPI
+# Better API return values and JSON success functions
+# Persist more user information
+
 def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
-    if not session.get('gplus_id'):
+    if not session.get('user_id'):
       return redirect(url_for('login'))
     return f(*args, **kwargs)
   return decorated
@@ -56,11 +66,12 @@ def connect():
     print "Flow exchange error"
 
   session['access_token'] = credentials.access_token
-  session['gplus_id'] = credentials.id_token['sub']
+  session['user_id'] = credentials.id_token['sub']
   session['token'] = "".join(random.sample(session['access_token'], 10))
   new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
-                                     "gplus_id": session['gplus_id'],
-                                     "weebly_token": session['token']})
+                                     "user_id": session['user_id'],
+                                     "weebly_token": session['token']
+                                     "auth_type": "google"})
   print session, new_user_id
   return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
 
