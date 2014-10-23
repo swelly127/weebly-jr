@@ -1,5 +1,6 @@
 secret_key = "sushi4ever"
 
+MONGO_URI = "mongodb://heroku_app30939305:hp8stoi02pumnkt4lnkj4ip9mq@ds047930.mongolab.com:47930/heroku_app30939305"
 WEEBLY_TOKEN = "AnwTFbSfRjVcPwmLZa9sdZ5WeTctj4T6"
 
 GOOGLE_APP_ID = "516087703797-5bqk46635cdvkln0077vslg1ot3rfjpe.apps.googleusercontent.com"
