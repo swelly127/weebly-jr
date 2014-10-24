@@ -24,12 +24,13 @@ app.secret_key = secret_key
 # Make active tab do ajax call to display the active page rather than default
 # Add API Key requirement to RestAPI
 # Better API return values and JSON success functions
-# Persist more user information
 
 def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
-    if not session.get('user_id'):
+    print args
+    token = 'api_token' in args and mongo.db.sessions.find_one({"weebly_token": args['api_token']})
+    if not token and not session.get('user_id'):
       return redirect(url_for('login'))
     return f(*args, **kwargs)
   return decorated
@@ -55,7 +56,7 @@ def connect():
     oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='', redirect_uri='postmessage')
     credentials = oauth_flow.step2_exchange(request.data)
   except FlowExchangeError:
-    print "Flow exchange error"
+    print "Flow Exchange Error"
 
   session['access_token'] = credentials.access_token
   session['user_id'] = credentials.id_token['sub']
