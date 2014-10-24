@@ -120,7 +120,7 @@ def get_page(page_id):
     doc = mongo.db.pages.find_one_or_404(ObjectId(page_id))
     return json.dumps(doc, indent=4, default=json_util.default)
   except InvalidId:
-    return json.dumps({"Error":"InvalidId"}})
+    return json.dumps({"Error":"InvalidId"})
 
 @app.route('/api/pages', methods=['GET'])
 @requires_auth

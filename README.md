@@ -22,7 +22,8 @@ foreman start web
 [x] Add API Key requirement to REST Api
 
 [ ] Stop the aggressive login without changing the token
-[ ] Bind content deletions and make content updatable/editable
+[ ] Bind content deletions and make content updatable
+[ ] Figure out good way to insert content and write docs for API
 [ ] Fix get all pages json
 [ ] Make active tab do ajax call to display the active page rather than default
 [ ] Better API return values and JSON success functions
