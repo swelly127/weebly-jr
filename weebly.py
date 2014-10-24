@@ -45,7 +45,6 @@ def index():
 def login():
     data = {}
     data['client_id'] = GOOGLE_APP_ID
-    data['redirect_uri'] = REDIRECT_URI
     data['certificate'] = ''.join(random.choice("0123456789") for x in xrange(16))
     session['certificate'] = data['certificate']
     return render_template('login.html', data=data)
@@ -59,14 +58,13 @@ def connect():
     credentials = oauth_flow.step2_exchange(request.data)
   except FlowExchangeError:
     print "Flow exchange error"
+
+  session['access_token'] = credentials.access_token
+  session['user_id'] = credentials.id_token['sub']
   current_user = mongo.db.sessions.find_one({"user_id": credentials.id_token['sub'], "auth_type": "google"})
   if current_user:
-    session['access_token'] = current_user["access_token"]
-    session['user_id'] = current_user["user_id"]
     session['token'] = current_user["weebly_token"]
   else:
-    session['access_token'] = credentials.access_token
-    session['user_id'] = credentials.id_token['sub']
     session['token'] = "".join(random.sample(session['access_token'], 10))
     new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
                                      "user_id": session['user_id'],
@@ -127,59 +125,46 @@ def new_page():
   else:
     return json.dumps({"failure": "insertion failed"})
 
-# Not working yet
 @app.route('/loginfb')
 def loginfb():
-  args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
+  args = dict(client_id=FB_APP_ID, redirect_uri=FB_REDIRECT_URI)
   return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
 
-# Not working yet
 @app.route('/auth')
 def auth():
-    """ Extract authorization token """
-    args = dict(client_id=FACEBOOK_APP_ID, redirect_uri="http://localhost:5000/auth")
-    args["client_secret"] = FACEBOOK_APP_SECRET  
-    args["code"] = request.args.get("code")
+    # Get access token 
+    args = dict(client_id=FB_APP_ID, redirect_uri=FB_REDIRECT_URI, code=request.args.get("code"))
+    args["client_secret"] = FB_APP_SECRET  
+    response_str = urllib.urlopen("https://graph.facebook.com/oauth/access_token?" 
+                                    + urllib.urlencode(args)).read()
 
-    """ Get access token """
-    response_str = urllib.urlopen(
-        "https://graph.facebook.com/oauth/access_token?" +
-        urllib.urlencode(args)).read()
-
-    """ If token request fails, redirect back to login """
+    # If token request fails, redirect back to login
     if response_str[0] == "{":
         del(args["client_secret"])
-        return redirect(
-        "https://graph.facebook.com/oauth/authorize?" +
-        urllib.urlencode(args))
+        return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
     response = cgi.parse_qs(response_str)
+
+    print "FACEBOOK OAUTH RESPONSE", response
     access_token = response["access_token"][-1]
 
-
-    """ Get profile data """
-    profile = json.load(urllib.urlopen(
-        "https://graph.facebook.com/me?" +
-        urllib.urlencode(dict(access_token=access_token))))
+    profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + 
+                        urllib.urlencode({"access_token":access_token})))
     user_id = profile['id']
+
+    print "FACEBOOK USER INFO", profile, profile['first_name'], profile['last_name']
     session['access_token'] = access_token
     session['user_id'] = user_id
 
-    user = Users.query.filter_by(id=user_id).first()
-
-    if user is None:
-        user = Users(user_id)
-
-    user.access_token = access_token
-    user.name = profile['first_name'] + profile['last_name']
-
-    mongo.db.sessions.add(user)
-    return redirect(url_for('index'))
-
-# Not working yet
-@app.route('/logoutfb')
-def logoutfb():
-    session.clear()
-    return redirect(url_for('index'))
+    current_user = mongo.db.sessions.find_one({"user_id": user_id, "auth_type": "facebook"})
+    if current_user:
+      session['token'] = current_user["weebly_token"]
+    else:
+      session['token'] = "".join(random.sample(access_token, 10))
+      new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
+                                       "user_id": session['user_id'],
+                                       "weebly_token": session['token'],
+                                       "auth_type": "facebook"})
+    return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
 
 if __name__ == "__main__":
 	app.run(debug=True, port=4000)
