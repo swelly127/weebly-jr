@@ -89,10 +89,8 @@ def update_page(page_id):
   except:
     return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   new_page = {"_id": ObjectId(page_id)}
-  if request.form.get('name'):
-    new_page["name"] = request.form.get('name')
-  if request.form.get('elements'):
-    new_page["elements"] = request.form.get('elements')
+  new_page["name"] = request.form.get('name') or "Page"
+  new_page["elements"] = request.form.get('elements') or DEFAULT_ELEMENTS
   if mongo.db.pages.save(new_page):
     return json.dumps({"success": "updated!"})
   else:
