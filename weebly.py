@@ -81,7 +81,7 @@ def logout():
   access_token = session.get('access_token')
   if access_token is None:
     return json.dumps({'error':'Current user not connected.'})
-  if request.args.get('delete', ''): # deletes account (mostly for testing)
+  if request.args.get('delete', ''): # deletes account & refreshes access_token on next sign in
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     urllib.urlopen(url)
     mongo.db.sessions.remove({"access_token": access_token})
