@@ -1,22 +1,26 @@
 
-function divClicked() {
-    var divHtml = $(this).text();
-    var editableText = $("<textarea class='page-link' />");
-    editableText.val(divHtml);
-    $(this).replaceWith(editableText);
-    editableText.focus();
-    // setup the blur event for this new textarea
-    editableText.blur(editableTextBlurred);
+function loadPage(page_id) {
+    $.ajax({
+        url: '/api/page/' + page_id,
+        type: 'GET',
+        success: function(result) {
+            alert(JSON.stringify(result))
+            var to_append = ""
+            _.each(result, function(row) {
+                to_append = to_append + "<table><tbody><tr>"
+                _.each(row, function(element) {
+                    if element:
+                        to_append = to_append + "<td><div class='element text-grid'><div class='delete'>\
+                                            </div><div>" + element + "</div></div></td>"
+                    else:
+                        to_append = to_append + "<td><div class='element image-grid'>\
+                                            <div class='delete'></div></div></td>"
+                })
+                to_append = to_append + "</tr></tbody></table>"
+            })
+        }
+    });
 }
-
-function editableTextBlurred() {
-    var html = $(this).val();
-    var viewableText = $("<div class='page-link'>");
-    viewableText.html(html);
-    $(this).replaceWith(viewableText);
-    // setup the click event for this new div
-    $(viewableText).click(divClicked);
-};
 
 $(document).ready(function() {
 
@@ -26,6 +30,7 @@ $(document).ready(function() {
         })
 
         $("#horizontal-page-nav .page-link:nth-child(1)").addClass("active");
+
         $("#horizontal-page-nav .page-link").click(function(){
             $("#horizontal-page-nav .page-link").removeClass("active");
             $(this).addClass("active");
