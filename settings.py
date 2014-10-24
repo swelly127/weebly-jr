@@ -1,4 +1,5 @@
 MONGO_URI = "mongodb://heroku_app30939305:hp8stoi02pumnkt4lnkj4ip9mq@ds047930.mongolab.com:47930/heroku_app30939305"
+SECRET_KEY = "sushi4ever"
 
 FB_APP_ID = "1534099716827401"
 FB_APP_SECRET = "eb6fa75df99dae0b30bcefc00fe1d8a9"

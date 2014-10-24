@@ -15,6 +15,7 @@ app.config['MONGO_URI'] = MONGO_URI
 mongo = PyMongo(app)
 
 app.debug = True
+app.secret_key = SECRET_KEY
 
 def requires_auth(f):
   @wraps(f)
