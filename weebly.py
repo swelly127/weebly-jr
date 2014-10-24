@@ -65,7 +65,7 @@ def connect():
   else:
     session['token'] = "".join(random.sample(session['access_token'], 10))
   profile = json.load(urllib.urlopen("https://www.googleapis.com/plus/v1/people/me?" + 
-                        urllib.urlencode({"access_token":access_token})))
+                        urllib.urlencode({"access_token": credentials.access_token})))
   mongo.db.sessions.save({"access_token": session['access_token'], 
                            "user_id": session['user_id'],
                            "weebly_token": session['token'],
