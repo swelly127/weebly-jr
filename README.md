@@ -35,11 +35,11 @@ Sample page ID for testing: <b>544a0774882819000754b501 </b><br>
 # API ENDPOINTS #
 
 | Endpoint | Description | Arguments |
-| ---- | --------------- | ----- |
+| ----------- | --- | -------- |
 | GET /api/pages | Get all pages | api_token |
 | GET /api/page/:id | Get a specific page | api_token |
-| POST /api/pages | Create a new page | api_token, name (string), element (nested array)|
-| PUT /api/page/:id | Update a specific page | api_token, name (string), element (nested array)|
+| POST /api/pages | Create a new page | api_token, name (string)<br>element (nested array)|
+| PUT /api/page/:id | Update a specific page | api_token, name (string)<br>element (nested array)|
 | DELETE /api/page/:id | Delete a specific page | api_token |
-| GET /api/me | JSON representation of logged in user's data | api_token |
+| GET /api/me | Authenticated user's data | api_token |
 | GET /logout | Logout | delete (boolean, revokes token if true) |
