@@ -28,8 +28,8 @@ app.secret_key = secret_key
 def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
-    print args
-    token = 'api_token' in args and mongo.db.sessions.find_one({"weebly_token": args['api_token']})
+    print request.args
+    token = 'api_token' in request.args and mongo.db.sessions.find_one({"weebly_token": request.args['api_token']})
     if not token and not session.get('user_id'):
       return redirect(url_for('login'))
     return f(*args, **kwargs)
