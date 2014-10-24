@@ -1,13 +1,31 @@
 <head>
   <script type="text/javascript">
-	  (function() {
-	    var po = document.createElement('script');
-	    po.type = 'text/javascript'; po.async = true;
-	    po.src = 'https://plus.google.com/js/client:plusone.js';
-	    var s = document.getElementsByTagName('script')[0];
-	    s.parentNode.insertBefore(po, s);
-	  })();
-  </script>
+  // GOOGLE JAVASCRIPT SDK
+	(function() {
+	  var po = document.createElement('script');
+	  po.type = 'text/javascript'; po.async = true;
+	  po.src = 'https://plus.google.com/js/client:plusone.js';
+	  var s = document.getElementsByTagName('script')[0];
+	  s.parentNode.insertBefore(po, s);
+	})();
+
+	// FACEBOOK JAVASCRIPT SDK
+	window.fbAsyncInit = function() {
+	FB.init({
+	  appId      : '1534099716827401',
+	  xfbml      : true,
+	  version    : 'v2.1'
+	});
+	};
+
+	(function(d, s, id){
+	 var js, fjs = d.getElementsByTagName(s)[0];
+	 if (d.getElementById(id)) {return;}
+	 js = d.createElement(s); js.id = id;
+	 js.src = "//connect.facebook.net/en_US/sdk.js";
+	 fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	</script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
 	<link rel="stylesheet" href="static/css/login.css">
 </head>
@@ -21,7 +39,7 @@
 
 <script type="text/javascript">
 
-function loginCallback(authResult) {
+(function loginCallback(authResult) {
   if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
@@ -36,6 +54,6 @@ function loginCallback(authResult) {
   } else if (authResult['error']) {
     console.log('There was an error: ' + authResult['error']);
   }
-}
+})();
 
 </script>
