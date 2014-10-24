@@ -64,10 +64,13 @@ def connect():
     session['token'] = current_user["weebly_token"]
   else:
     session['token'] = "".join(random.sample(session['access_token'], 10))
-    new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
-                                     "user_id": session['user_id'],
-                                     "weebly_token": session['token'],
-                                     "auth_type": "google"})
+  profile = json.load(urllib.urlopen("https://www.googleapis.com/plus/v1/people/me?" + 
+                        urllib.urlencode({"access_token":access_token})))
+  mongo.db.sessions.save({"access_token": session['access_token'], 
+                           "user_id": session['user_id'],
+                           "weebly_token": session['token'],
+                           "info": profile,
+                           "auth_type": "google"})
   return redirect(url_for('index'))
 
 @app.route('/logout')

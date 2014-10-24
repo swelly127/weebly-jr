@@ -36,18 +36,6 @@
     /**
      * Retrieves and renders the authenticated user's Google+ profile.
      */
-	function renderProfile() {
-	  var request = gapi.client.plus.people.get( {'userId' : 'me'} );
-	  request.execute( function(profile) {
-	      if (profile.error) {
-	        console.log(profile.error);
-	        return;  // profile.coverPhoto profile.cover.coverPhoto.url
-	      } // profile.image.url profile.displayName profile.tagline profile.aboutMe 
-	      console.log(profile);
-	      alert(str(profile) + profile.displayName);
-	    });
-	}
-
 	function loginCallback(authResult) {
 	  if (authResult['access_token']) {
 		$.ajax({
@@ -60,7 +48,6 @@
 			processData: false,
 			data: authResult.code
 		});
-		gapi.client.load('plus','v1',this.renderProfile);
 	  } else if (authResult['error']) {
 	    console.log('There was an error: ' + authResult['error']);
 	  }
