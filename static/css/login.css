@@ -24,6 +24,7 @@ img#loginGoogle {
 button.g-signin {
 	margin: 0 35%;
 	width: 30%;
+	cursor: pointer;
 	background-color: transparent;
 	border: none;
 }

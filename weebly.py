@@ -59,14 +59,14 @@ def connect():
 
   session['access_token'] = credentials.access_token
   session['user_id'] = credentials.id_token['sub']
+  profile = json.load(urllib.urlopen("https://www.googleapis.com/plus/v1/people/me?" + 
+                        urllib.urlencode({"access_token": credentials.access_token})))
   current_user = mongo.db.sessions.find_one({"user_id": credentials.id_token['sub'], "auth_type": "google"})
   if current_user:
     session['token'] = current_user["weebly_token"]
   else:
     session['token'] = "".join(random.sample(session['access_token'], 10))
-  profile = json.load(urllib.urlopen("https://www.googleapis.com/plus/v1/people/me?" + 
-                        urllib.urlencode({"access_token": credentials.access_token})))
-  mongo.db.sessions.save({"access_token": session['access_token'], 
+    mongo.db.sessions.save({"access_token": session['access_token'], 
                            "user_id": session['user_id'],
                            "weebly_token": session['token'],
                            "info": profile,
@@ -154,7 +154,7 @@ def auth():
       session['token'] = current_user["weebly_token"]
     else:
       session['token'] = "".join(random.sample(access_token, 10))
-    mongo.db.sessions.save({"access_token": session['access_token'], # mongo save returns an ObjectID
+      mongo.db.sessions.save({"access_token": session['access_token'], # mongo save returns an ObjectID
                              "user_id": session['user_id'],
                              "weebly_token": session['token'],
                              "info": profile,
