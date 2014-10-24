@@ -19,10 +19,10 @@ foreman start web
 [x] Ajax executing twice on keydown
 [x] Facebook Login
 [x] Edit buttons overlapping with text
+[x] Add API Key requirement to REST Api
 
-[ ] Stop the weird aggressive login
+[ ] Stop the aggressive login without changing the token
 [ ] Bind content deletions and make content updatable/editable
 [ ] Fix get all pages json
 [ ] Make active tab do ajax call to display the active page rather than default
-[ ] Add API Key requirement to RestAPI
 [ ] Better API return values and JSON success functions

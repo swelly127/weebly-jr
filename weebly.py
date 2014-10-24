@@ -93,30 +93,40 @@ def logout():
 def update_page(page_id):
   # db.pages.update({"name":"secod one", "elements":["teeheee"]}, { $set: {"elements.$" : "RUH ROH"} })
   print request.form
+  new_page = {"_id": ObjectId(page_id)}
   if request.form.get('name'):
-    mongo.db.pages.save({"_id": ObjectId(page_id), "name":request.form.get('name')})
+    new_page["name"] = request.form.get('name')
   if request.form.get('elements'):
-    mongo.db.pages.save({"_id": ObjectId(page_id), "elements":request.form.get('elements')})
-  return json.dumps({"success":"updated!"})
+    new_page["elements"] = request.form.get('elements')
+  if mongo.db.pages.save(new_page):
+    return json.dumps({"success": "updated!"})
+  else:
+    return json.dumps({"error": "update not successful"})
 
 @app.route('/api/page/<page_id>', methods=['DELETE'])
 @requires_auth
 def delete_page(page_id):
-  if mongo.db.pages.remove(ObjectId(page_id)):
-    return json.dumps({"deleted":page_id})
+  result = mongo.db.pages.remove(ObjectId(page_id))
+  if not result:
+    return json.dumps({"error": "unknown error"})
+  elif result = [None]:
+    return json.dumps({"error": "id not found"})
+  return json.dumps({"deleted": page_id})
 
 @app.route('/api/page/<page_id>', methods=['GET'])
 @requires_auth
 def get_page(page_id):
-  print page_id
-  return json.dumps(mongo.db.pages.find_one_or_404(ObjectId(page_id)), indent=4, default=json_util.default)
+  try:
+    doc = mongo.db.pages.find_one_or_404(ObjectId(page_id))
+    return json.dumps(doc, indent=4, default=json_util.default)
+  except InvalidId:
+    return json.dumps({"Error":"InvalidId"}})
 
 @app.route('/api/pages', methods=['GET'])
 @requires_auth
 def get_all_pages():
-  for doc in mongo.db.pages.find():
-    page_json = json.dumps(doc, indent=4, default=json_util.default)
-  return page_json
+  docs = list(mongo.db.pages.find())
+  return json.dumps(docs, indent=4, default=json_util.default)
 
 @app.route('/api/pages', methods=['POST'])
 @requires_auth
