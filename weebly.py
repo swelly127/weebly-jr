@@ -85,7 +85,7 @@ def logout():
 def update_page(page_id):
   # db.pages.update({"name":"secod one", "elements":["teeheee"]}, { $set: {"elements.$" : "RUH ROH"} })
   try:
-    ObjectId.isValid(page_id):
+    ObjectId(page_id)
   except:
     return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   new_page = {"_id": ObjectId(page_id)}
@@ -102,7 +102,7 @@ def update_page(page_id):
 @requires_auth
 def delete_page(page_id):
   try:
-    ObjectId.isValid(page_id):
+    ObjectId(page_id)
   except:
     return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   result = mongo.db.pages.remove(ObjectId(page_id))
@@ -116,7 +116,7 @@ def delete_page(page_id):
 @requires_auth
 def get_page(page_id):
   try:
-    ObjectId.isValid(page_id):
+    ObjectId(page_id)
   except:
     return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   doc = mongo.db.pages.find_one_or_404(ObjectId(page_id))
