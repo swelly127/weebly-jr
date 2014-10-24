@@ -42,6 +42,8 @@ def index():
 
 @app.route('/login')
 def login():
+    if session.get('user_id'):
+      return redirect(url_for('index'))
     data = {}
     data['client_id'] = GOOGLE_APP_ID
     data['certificate'] = ''.join(random.choice("0123456789") for x in xrange(16))
