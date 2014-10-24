@@ -37,7 +37,7 @@
      * Retrieves and renders the authenticated user's Google+ profile.
      */
 	function loginCallback(authResult) {  
-	  if (authResult['access_token'] & authResult['g-oauth-window']) {
+	  if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
 			url: window.location.href + '/../connect?certificate={{data.certificate}}',
