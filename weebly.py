@@ -26,8 +26,6 @@ app.secret_key = secret_key
 # Better API return values and JSON success functions
 # Persist more user information
 
-# Facebook login (?)
-
 def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
@@ -153,12 +151,11 @@ def auth():
       session['token'] = current_user["weebly_token"]
     else:
       session['token'] = "".join(random.sample(access_token, 10))
-    new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
-                                       "user_id": session['user_id'],
-                                       "weebly_token": session['token'],
-                                       "info": profile,
-                                       "auth_type": "facebook"})
-    print "MONGO SAVE RETURNS" + new_user_id
+    mongo.db.sessions.save({"access_token": session['access_token'], # mongo save returns an ObjectID
+                             "user_id": session['user_id'],
+                             "weebly_token": session['token'],
+                             "info": profile,
+                             "auth_type": "facebook"})
     return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
 
 if __name__ == "__main__":
