@@ -84,8 +84,9 @@ def logout():
 @requires_auth
 def update_page(page_id):
   # db.pages.update({"name":"secod one", "elements":["teeheee"]}, { $set: {"elements.$" : "RUH ROH"} })
-  print request.form
-  if not ObjectId.isValid(page_id):
+  try:
+    ObjectId.isValid(page_id):
+  except:
     return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   new_page = {"_id": ObjectId(page_id)}
   if request.form.get('name'):
@@ -100,6 +101,10 @@ def update_page(page_id):
 @app.route('/api/page/<page_id>', methods=['DELETE'])
 @requires_auth
 def delete_page(page_id):
+  try:
+    ObjectId.isValid(page_id):
+  except:
+    return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   result = mongo.db.pages.remove(ObjectId(page_id))
   if not result:
     return json.dumps({"error": "unknown error"})
@@ -111,10 +116,11 @@ def delete_page(page_id):
 @requires_auth
 def get_page(page_id):
   try:
-    doc = mongo.db.pages.find_one_or_404(ObjectId(page_id))
-    return json.dumps(doc, indent=4, default=json_util.default)
-  except InvalidId:
-    return json.dumps({"Error":"InvalidId"})
+    ObjectId.isValid(page_id):
+  except:
+    return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
+  doc = mongo.db.pages.find_one_or_404(ObjectId(page_id))
+  return json.dumps(doc, indent=4, default=json_util.default)
 
 @app.route('/api/pages', methods=['GET'])
 @requires_auth
