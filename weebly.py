@@ -125,16 +125,11 @@ def new_page():
   else:
     return json.dumps({"failure": "insertion failed"})
 
-@app.route('/loginfb')
-def loginfb():
-  args = dict(client_id=FB_APP_ID, redirect_uri=FB_REDIRECT_URI)
-  return redirect("https://graph.facebook.com/oauth/authorize?" + urllib.urlencode(args))
-
 @app.route('/auth')
 def auth():
     # Get access token 
-    args = dict(client_id=FB_APP_ID, redirect_uri=FB_REDIRECT_URI, code=request.args.get("code"))
-    args["client_secret"] = FB_APP_SECRET  
+    args = dict(client_id=FB_APP_ID, redirect_uri=FB_REDIRECT_URI, 
+                code=request.args.get("code"), client_secret=FB_APP_SECRET)
     response_str = urllib.urlopen("https://graph.facebook.com/oauth/access_token?" 
                                     + urllib.urlencode(args)).read()
 
@@ -149,21 +144,21 @@ def auth():
 
     profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + 
                         urllib.urlencode({"access_token":access_token})))
-    user_id = profile['id']
 
-    print "FACEBOOK USER INFO", profile, profile['first_name'], profile['last_name']
     session['access_token'] = access_token
-    session['user_id'] = user_id
+    session['user_id'] = profile['id']
 
-    current_user = mongo.db.sessions.find_one({"user_id": user_id, "auth_type": "facebook"})
+    current_user = mongo.db.sessions.find_one({"user_id": profile['id'], "auth_type": "facebook"})
     if current_user:
       session['token'] = current_user["weebly_token"]
     else:
       session['token'] = "".join(random.sample(access_token, 10))
-      new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
+    new_user_id = mongo.db.sessions.save({"access_token": session['access_token'], 
                                        "user_id": session['user_id'],
                                        "weebly_token": session['token'],
+                                       "info": profile,
                                        "auth_type": "facebook"})
+    print "MONGO SAVE RETURNS" + new_user_id
     return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
 
 if __name__ == "__main__":

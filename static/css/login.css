@@ -8,12 +8,17 @@ body {
 img#weebly {
 	margin-left:30%;
 	width:40%;
-	margin-top:20%;
+	margin-top:10%;
 }
 
-img#loginButton {
+img#loginGoogle {
 	width:100%;
 	margin-top:10px;
+}
+
+#loginFb {
+	width: 28%;
+	margin-left: 36%;
 }
 
 button.g-signin {

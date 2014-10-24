@@ -10,14 +10,7 @@
 	})();
 
 	// FACEBOOK JAVASCRIPT SDK
-	window.fbAsyncInit = function() {
-	FB.init({
-	  appId      : '1534099716827401',
-	  xfbml      : true,
-	  version    : 'v2.1'
-	});
-	};
-
+	window.fbAsyncInit = function() {FB.init({appId : '1534099716827401', xfbml: true, version : 'v2.1'});};
 	(function(d, s, id){
 	 var js, fjs = d.getElementsByTagName(s)[0];
 	 if (d.getElementById(id)) {return;}
@@ -26,21 +19,37 @@
 	 fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
 	</script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<link rel="stylesheet" href="static/css/login.css">
 </head>
+
 <body>
     <img src="static/img/weebly-full-logo.png" id="weebly">
     <button class="g-signin" data-scope="https://www.googleapis.com/auth/plus.login" data-theme="dark"
     	data-cookiepolicy="single_host_origin" data-clientId="{{data.client_id}}" data-callback="loginCallback">
-      <img src="static/img/google-oauth.png" id="loginButton">
+      <img src="static/img/google-oauth.png" id="loginGoogle">
     </button>
+    <a href="http://weebly-junior.herokuapp.com/auth"><img src="static/img/facebook-oauth.png" id="loginFb"></a>
 </body>
 
 <script type="text/javascript">
+    /**
+     * Retrieves and renders the authenticated user's Google+ profile.
+     */
+	function renderProfile() {
+	  var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+	  request.execute( function(profile) {
+	      if (profile.error) {
+	        console.log(profile.error);
+	        return;  // profile.coverPhoto profile.cover.coverPhoto.url
+	      } // profile.image.url profile.displayName profile.tagline profile.aboutMe 
+	      console.log(profile);
+	      alert(profile);
+	    });
+	},
 
-function loginCallback(authResult) {
-  if (authResult['access_token']) {
+	function loginCallback(authResult) {
+	  if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
 			url: window.location.href + '/../connect?certificate={{data.certificate}}',
@@ -51,9 +60,10 @@ function loginCallback(authResult) {
 			processData: false,
 			data: authResult.code
 		});
-  } else if (authResult['error']) {
-    console.log('There was an error: ' + authResult['error']);
-  }
-}
+		gapi.client.load('plus','v1',this.renderProfile);
+	  } else if (authResult['error']) {
+	    console.log('There was an error: ' + authResult['error']);
+	  }
+	}
 
 </script>
