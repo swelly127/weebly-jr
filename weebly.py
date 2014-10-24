@@ -83,7 +83,7 @@ def logout():
 @app.route('/api/page/<page_id>', methods=['PUT'])
 @requires_auth
 def update_page(page_id):
-  # db.pages.update({"name":"secod one", "elements":["teeheee"]}, { $set: {"elements.$" : "RUH ROH"} })
+  # db.pages.update({"name":"Page", "elements":["text here"]}, { $set: {"elements.$" : "new text here"} })
   try:
     ObjectId(page_id)
   except:
@@ -106,9 +106,7 @@ def delete_page(page_id):
   except:
     return json.dumps({"error": "Invalid ObjectId format. ObjectId's are 24 chars. Ex: 5449f7498cb161000776dc64"})
   result = mongo.db.pages.remove(ObjectId(page_id))
-  if not result:
-    return json.dumps({"error": "unknown error"})
-  elif result == [None]:
+  if result == [None]:
     return json.dumps({"error": "id not found"})
   return json.dumps({"deleted": page_id})
 
@@ -166,7 +164,7 @@ def auth():
       session['token'] = current_user["weebly_token"]
     else:
       session['token'] = "".join(random.sample(access_token, 10))
-      mongo.db.sessions.save({"access_token": session['access_token'], # mongo save returns an ObjectID
+      mongo.db.sessions.save({"access_token": session['access_token'],
                              "user_id": session['user_id'],
                              "weebly_token": session['token'],
                              "info": profile,
