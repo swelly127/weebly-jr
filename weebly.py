@@ -109,7 +109,7 @@ def delete_page(page_id):
   result = mongo.db.pages.remove(ObjectId(page_id))
   if not result:
     return json.dumps({"error": "unknown error"})
-  elif result = [None]:
+  elif result == [None]:
     return json.dumps({"error": "id not found"})
   return json.dumps({"deleted": page_id})
 
