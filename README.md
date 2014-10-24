@@ -21,6 +21,7 @@ foreman start web
 [x] Edit buttons overlapping with text
 [x] Add API Key requirement to REST Api
 [x] Fix get all pages json
+[x] Handle ObjectId format error
 
 [ ] Stop the aggressive login without changing the token
 [ ] Bind content deletions and make content updatable
