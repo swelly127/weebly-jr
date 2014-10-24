@@ -68,7 +68,7 @@ def connect():
                                      "user_id": session['user_id'],
                                      "weebly_token": session['token'],
                                      "auth_type": "google"})
-  return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
+  return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
@@ -156,7 +156,7 @@ def auth():
                              "weebly_token": session['token'],
                              "info": profile,
                              "auth_type": "facebook"})
-    return render_template('index.html', pages=list(mongo.db.pages.find()), token=session['token'])
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
 	app.run(debug=True, port=4000)
