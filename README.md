@@ -12,3 +12,17 @@ TO TEST:
 source venv/bin/activate
 pip install -r requirements.txt 
 foreman start web
+
+=================
+# BUGS AND TODO #
+=================
+[x] Ajax executing twice on keydown
+[x] Facebook Login
+[x] Edit buttons overlapping with text
+
+[ ] Stop the weird aggressive login
+[ ] Bind content deletions and make content updatable/editable
+[ ] Fix get all pages json
+[ ] Make active tab do ajax call to display the active page rather than default
+[ ] Add API Key requirement to RestAPI
+[ ] Better API return values and JSON success functions

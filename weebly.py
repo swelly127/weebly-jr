@@ -134,7 +134,6 @@ def auth():
                 code=request.args.get("code"), client_secret=FB_APP_SECRET)
     response_str = urllib.urlopen("https://graph.facebook.com/oauth/access_token?" 
                                     + urllib.urlencode(args)).read()
-
     # If token request fails, redirect back to login
     if response_str[0] == "{":
         del(args["client_secret"])
