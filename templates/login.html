@@ -37,6 +37,8 @@
      * Retrieves and renders the authenticated user's Google+ profile.
      */
 	function loginCallback(authResult) {
+		alert("meo" + authResult.code)
+		alert(str(authResult))
 	  if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
