@@ -33,12 +33,13 @@
 </body>
 
 <script type="text/javascript">
+$(document).ready(function() {
     /**
      * Retrieves and renders the authenticated user's Google+ profile.
      */
-	function loginCallback(authResult) {
-		alert("meo" + authResult.code)
-		alert(str(authResult))
+	loginCallback = function(authResult) {
+		alert("code:" + authResult.code)
+		alert(authResult)
 	  if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
@@ -54,5 +55,5 @@
 	    console.log('There was an error: ' + authResult['error']);
 	  }
 	}
-
+}
 </script>

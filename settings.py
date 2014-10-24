@@ -11,6 +11,8 @@ FB_CLIENT_TOKEN = "e9e74e0c3056c41c8e957159d5c18e92"
 GOOGLE_APP_ID = "516087703797-5bqk46635cdvkln0077vslg1ot3rfjpe.apps.googleusercontent.com"
 GOOGLE_APP_SECRET = "1-YwUXZ0rZp_H6l09FFGqKJD"
 
+CODE = "4/ePTxDoU8jggkLY81myq4i_tK1mmjioxzyNDcLDBlS48.4huVwXle_cIXXmXvfARQvtgoqISBkgI"
+
 AUTH_URL = "https://accounts.google.com/o/oauth2/auth",
 TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
 LOGIN_URL = "https://www.googleapis.com/auth/plus.login"
