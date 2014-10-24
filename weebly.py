@@ -17,14 +17,6 @@ mongo = PyMongo(app)
 app.debug = True
 app.secret_key = secret_key
 
-# TODO: 
-# Stop the weird aggressive login
-# Bind content deletions and make content updatable/editable
-# Fix get all pages json
-# Make active tab do ajax call to display the active page rather than default
-# Add API Key requirement to RestAPI
-# Better API return values and JSON success functions
-
 def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
@@ -117,7 +109,7 @@ def delete_page(page_id):
 @requires_auth
 def get_page(page_id):
   try:
-    doc = mongo.db.pages.find_one_or_404(ObjectId(page_id))
+    doc = mongo.db.pages.find_one_or_404(page_id)
     return json.dumps(doc, indent=4, default=json_util.default)
   except InvalidId:
     return json.dumps({"Error":"InvalidId"})
