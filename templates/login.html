@@ -39,7 +39,7 @@
 
 <script type="text/javascript">
 
-(function loginCallback(authResult) {
+function loginCallbackMeow(authResult) {
   if (authResult['access_token']) {
 		$.ajax({
 			type: 'POST',
@@ -54,6 +54,6 @@
   } else if (authResult['error']) {
     console.log('There was an error: ' + authResult['error']);
   }
-})();
+}
 
 </script>
